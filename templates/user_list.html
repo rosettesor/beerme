@@ -1,0 +1,6 @@
+<html>
+<h3>See <a href="{{ url_for("my_ratings") }}">my Ratings</a></h3><br>
+{% for user in users %}
+<h3><a href="{{ url_for("user_ratings", id=user.id) }}">User {{ user.id }}</a>, age {{ user.age }} had {{ user.ratings|length }} ratings</h3>
+{% endfor %}
+</html>

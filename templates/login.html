@@ -1,0 +1,12 @@
+<html>
+<h2>Login</h2>
+<body>
+<h3>Please enter email and password </h3>
+<form method = "POST" action="/login_user">
+			<input type = "text" name = "email"></input> email <br> 
+            <input type = "text" name = "password"></input> password <br> 
+            <input type = "submit">
+    	</form>
+<h3><a href="{{ url_for("new_user") }}">Create account</a></h3><br>
+</body>
+</html>

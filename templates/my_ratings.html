@@ -1,0 +1,16 @@
+<html>
+<h2>My Ratings, ID# {{ mine[0].user_id }} </h2><br>
+<h2>Edit a Rating</h2>
+<form method = "POST" action="/change_rating">
+movie name: <input type = "text" name = "movie_name"></input><br>
+new rating (from 1 to 5): <input type = "text" name = "new_rating"></input>
+<input type = "submit">
+</form>
+<br>
+<br>
+{% for rating in mine %}
+Movie: {{ rating.movie.name }}<br>
+Rating: {{ rating.rating }}<br>
+<p>
+{% endfor %}
+</html>
