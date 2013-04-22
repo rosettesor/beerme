@@ -1,19 +1,31 @@
 <html>
 <h2>join BeerMe</h2>
 <body>
-<form method = "POST" action="/save_user">
-			email <input type = "text" name = "email"></input> <br>
+  <form method="POST" action="/save user">                       
+        {% for field in form %}  
+          <tr>              
+            {% for error in field.errors %}
+            <p style="color:red">{{error}}</p> 
+            {% endfor %}  
+          <td>{{ field.label }}</td>
+          <td>{{ field }}</td>
+          </tr>                                          
+        {% endfor %}
+        <input type="submit">                  
+    </form>
+    <!-- <form method = "POST" action="/save_user">
+      email <input type = "text" name = "email"></input> <br>
             password <input type = "text" name = "password"></input> <br>
             first name <input type = "text" name = "firstname"></input> <br>
             last name <input type = "text" name = "lastname"></input> <br>
             age <input type = "text" name = "age"></input> <br>
             city <input type = "text" name = "city"></input> <br>
             state <select name="state" id="state">
-  			<option value="CA">CA</option>
-  			<option value="NV">NV</option>
-  			<option value="CO">CO</option>
-			</select>
+        <option value="CA">CA</option>
+        <option value="NV">NV</option>
+        <option value="CO">CO</option>
+      </select>
             <input type = "submit">
-    	</form>
+      </form> -->
 </body>
 </html>

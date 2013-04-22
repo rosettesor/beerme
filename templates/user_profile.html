@@ -1,0 +1,21 @@
+<html>
+<h2>hey {{ user_name }}, you've tasted {{ count }} beers</h2>
+{% for rating in ratings %}
+beer: <a href="/beer_profile/{{rating.beer.id}}">{{rating.beer.name}}</a><br>
+rating: {{ rating.rating }}<br>
+<p>
+{% endfor %}
+beer queue<br>
+<br>
+highest rated<br>
+<br>
+recently tasted<br>
+<br>
+<form action="/home">
+<button type = "submit">home</button><br>
+</form>
+<br>
+<form method = "GET" action="/logout">
+<button type = "submit">logout</button>
+</form>
+</html>

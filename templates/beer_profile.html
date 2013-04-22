@@ -1,0 +1,24 @@
+<html>
+<h2>{{ beer.name }}</h2>
+<h4> average rating: {{ "%.2f"%average }}</h4>
+{% if user_rating %}
+<h4>your rating: {{ user_rating.rating }}</h4>
+{% elif prediction %}
+<h4>our prediction for you: {{ prediction }}</h4>
+{% endif %}
+
+<h2>rate this beer</h2>
+
+<form method = "POST" action="/change_rating">
+rating: 
+    <select name="new_rating">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+<input type = "submit">
+</form>
+</html>
