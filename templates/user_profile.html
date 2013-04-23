@@ -5,17 +5,33 @@ beer: <a href="/beer_profile/{{rating.beer.id}}">{{rating.beer.name}}</a><br>
 rating: {{ rating.rating }}<br>
 <p>
 {% endfor %}
-beer queue<br>
 <br>
 highest rated<br>
-<br>
-recently tasted<br>
 <br>
 <form action="/home">
 <button type = "submit">home</button><br>
 </form>
 <br>
+<form action="/profile/{{id}}">
+<button type = "submit">my ratings</button><br>
+</form>
+<br>
 <form method = "GET" action="/logout">
 <button type = "submit">logout</button>
 </form>
+my beer queue
+{% for unrated in queue %}
+<a href="/beer_profile/{{unrated.id}}">{{unrated.name}}</a><br>
+{% endfor %}
+<br>
+<br>
+you should try... (shows all that have not been rated)
+<br>
+{% for unrated in not_rated %}
+<a href="/beer_profile/{{unrated.id}}">{{unrated.name}}</a><br>
+{% else %}
+<br>
+have you tried our entire repertoire? suggest beers to add
+{% endfor %}
+<br>
 </html>

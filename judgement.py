@@ -117,19 +117,30 @@ def user_info():
 def user_profile(id):
 	if id == current_user.id:
 		user_ratings = model.session.query(model.Rating).filter_by(user_id=id).all()
+		rated_beers = []
+		for i in user_ratings:
+			rated_beers.append(i.beer_id)
+		not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
+		# in_queue = model.session.query(model.Rating).filter_by(user_id=id, rating=None)
 		how_many = len(user_ratings)
-		username = current_user.username
+		user_name = current_user.username
+		user_id = current_user.id
 		return render_template("user_profile.html", ratings = user_ratings,\
-		count = how_many, user_name = username)
+		count = how_many, user_name = user_name, id=user_id, not_rated = not_rated)
 	return redirect("/home")
 
 
 # show user's beer queue in order of predicted rating
-@app.route("/profile/beer_queue/<int:id>", methods = ["GET"])
-@login_required
-def user_queue(id):
-	pass
-	return render_template("user_queue.html")
+# @app.route("/profile/beer_queue/<int:id>", methods = ["GET", "POST"])
+# @login_required
+# def beer_queue(id):
+# 	beer = model.session.query(model.Beer).get(id)
+# 	new_queue = request.form['my_queue']
+# 	add_queue = model.Rating(user_id = current_user.id, beer_id = beer.id, rating = null)
+# 	model.session.add(add_queue)
+# 	model.session.commit()
+# 	return redirect("/home")
+	# return redirect(url_for("beer_profile", id=beer.id))
 
 
 # show user's highest rated in order of actual rating
@@ -153,6 +164,7 @@ def user_recent(id):
 @login_required
 def beer_profile(id):
 	beer = model.session.query(model.Beer).get(id)
+	user_id = current_user.id
 	ratings = beer.ratings
 	rating_nums = []
 	user_rating = None
@@ -161,6 +173,7 @@ def beer_profile(id):
 			user_rating = r
 		rating_nums.append(r.rating)
 	avg_rating = float(sum(rating_nums))/len(rating_nums)
+
 	# prediction code: only predict if the user hasn't rated yet
 	print current_user.username
 	prediction = None
@@ -170,33 +183,25 @@ def beer_profile(id):
 	else:
 		effective_rating = user_rating.rating
 	# end prediction
-	return render_template("beer_profile.html", beer=beer,\
-		average = avg_rating, user_rating = user_rating, prediction = prediction)
+	return render_template("beer_profile.html", beer=beer, user_id=user_id,\
+		average=avg_rating, user_rating=user_rating, prediction=prediction)
 
 
-
-# @app.route("/my_ratings")
-# def my_ratings():
-# 	my_ratings = model.session.query(model.Rating).filter_by(user_id=session['id']).all()
-# 	return render_template("my_ratings.html", mine = my_ratings)
-
-
-# @app.route("/change_rating", methods = ["GET", "POST"])
-# def change_rating():
-# 	movie_change = request.form['movie_name']
-# 	find_movie = model.session.query(model.Movie).filter_by(name=movie_change).first()
-# 	rating_change = request.form['new_rating']
-# 	current_rating = model.session.query(model.Rating).filter(model.Rating.user_id==session['id'], model.Rating.movie_id==find_movie.id).first()
-# 	if current_rating:
-# 		current_rating.rating = rating_change
-# 	else:
-# 		new_rating = request.form['new_rating']
-# 		add_rating = model.Rating(user_id = session['id'], movie_id = movie.id, rating = new_rating)
-# 		model.session.add(add_rating)
-# 		model.session.commit()
-# 		return redirect("/my_ratings")
-# 	model.session.commit()
-# 	return redirect("/my_ratings")
+@app.route("/change_rating/<int:id>", methods = ["GET", "POST"])
+def change_rating(id):
+	beer = model.session.query(model.Beer).get(id)
+	rating_change = request.form['new_rating']
+	current_rating = model.session.query(model.Rating).filter(model.Rating.user_id==current_user.id, model.Rating.beer_id==beer.id).first()
+	if current_rating:
+		current_rating.rating = rating_change
+	else:
+		new_rating = request.form['new_rating']
+		add_rating = model.Rating(user_id = current_user.id, beer_id = beer.id, rating = new_rating)
+		model.session.add(add_rating)
+		model.session.commit()
+		return redirect(url_for("beer_profile", id=beer.id))
+	model.session.commit()
+	return redirect(url_for("beer_profile", id=beer.id))
 
 
 @app.route("/logout", methods = ["GET"])
