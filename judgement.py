@@ -4,6 +4,7 @@
 from flask import Flask, render_template, redirect, request, session, url_for, g
 from flask.ext.login import LoginManager, current_user, login_required, login_user, logout_user
 import model
+import math
 app = Flask(__name__)
 app.secret_key = "obligatory_secret_key"
 
@@ -120,47 +121,26 @@ def user_profile(id):
 		rated_beers = []
 		for i in user_ratings:
 			rated_beers.append(i.beer_id)
+		high_rated = model.session.query(model.Rating).filter_by(user_id=id).order_by(model.Rating.rating.desc())
 		not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
 		# in_queue = model.session.query(model.Rating).filter_by(user_id=id, rating=None)
 		how_many = len(user_ratings)
 		user_name = current_user.username
 		user_id = current_user.id
-		return render_template("user_profile.html", ratings = user_ratings,\
+		return render_template("user_profile.html", high_rated = high_rated, \
 		count = how_many, user_name = user_name, id=user_id, not_rated = not_rated)
 	return redirect("/home")
 
 
-# show user's beer queue in order of predicted rating
-# @app.route("/profile/beer_queue/<int:id>", methods = ["GET", "POST"])
-# @login_required
-# def beer_queue(id):
-# 	beer = model.session.query(model.Beer).get(id)
-# 	new_queue = request.form['my_queue']
-# 	add_queue = model.Rating(user_id = current_user.id, beer_id = beer.id, rating = null)
-# 	model.session.add(add_queue)
-# 	model.session.commit()
-# 	return redirect("/home")
-	# return redirect(url_for("beer_profile", id=beer.id))
-
-
-# show user's highest rated in order of actual rating
-@app.route("/profile/highest_rated/<int:id>", methods = ["GET"])
+# show all of user's ratings
+@app.route("/profile/ratings/<int:id>", methods = ["GET"])
 @login_required
-def user_highest(id):
-	pass
-	return render_template("user_highest.html")
-
-
-# show user's recently rated in order of most recent ratings
-@app.route("/profile/recent_rated/<int:id>", methods = ["GET"])
-@login_required
-def user_recent(id):
-	pass
-	return render_template("user_recent.html")
-
+def user_ratings(id):
+	user_ratings = model.session.query(model.Rating).filter_by(user_id=id).all()
+	return render_template("user_ratings.html", ratings=user_ratings)
 
 # show profile for single beer
-@app.route("/beer_profile/<int:id>", methods = ["GET", "POST"])
+@app.route("/beer/<int:id>", methods = ["GET", "POST"])
 @login_required
 def beer_profile(id):
 	beer = model.session.query(model.Beer).get(id)
@@ -175,13 +155,10 @@ def beer_profile(id):
 	avg_rating = float(sum(rating_nums))/len(rating_nums)
 
 	# prediction code: only predict if the user hasn't rated yet
-	print current_user.username
-	prediction = None
-	if not user_rating:
-		prediction = current_user.predict_rating(beer)
-		effective_rating = prediction
+	if user_rating is None:
+		prediction = int(round(current_user.predict_rating(beer))) 
 	else:
-		effective_rating = user_rating.rating
+		prediction = user_rating.rating
 	# end prediction
 	return render_template("beer_profile.html", beer=beer, user_id=user_id,\
 		average=avg_rating, user_rating=user_rating, prediction=prediction)

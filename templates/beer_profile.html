@@ -5,22 +5,13 @@
 {% if user_rating %}
 <h4>your rating: {{ user_rating.rating }}</h4>
 <h2>change your rating</h2>
-<form method = "POST" action="/change_rating/{{beer.id}}">
-rating: 
-    <select name="new_rating">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-<input type = "submit">
-</form>
 
-{% elif prediction %}
+{% else %}
 <h4>our prediction for you: {{ prediction }}</h4>
 <h2>rate this beer</h2>
+
+{% endif %}
+
 <form method = "POST" action="/change_rating/{{beer.id}}">
 rating: 
     <select name="new_rating">
@@ -33,10 +24,8 @@ rating:
     </select>
 <input type = "submit">
 </form>
-
-{% endif %}
 <br>
 <form action="/profile/{{user_id}}">
-<button type = "submit">my ratings</button><br>
+<button type = "submit">my profile</button><br>
 </form>
 </html>
