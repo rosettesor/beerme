@@ -4,7 +4,7 @@
 <br>
 <h3>beers with highest similarity coefficient to user</h3>
 <br>
-<h3>show highest average rated beers by others</h3>
+<h3>highest rated beers</h3>
 {% for average in high_averages %}
 beer: <a href="/beer/{{ average[0] }}">{{ average[2] }}</a>
 <br>
@@ -12,7 +12,12 @@ average: {{ "%.2f"%average[1] }}
 <p>
 {% endfor %}
 <br>
-<h3>show most rated beers (most number of ratings)</h3>
+<h3>most rated beers</h3>
+{% for popular in most_rated %}
+beer: <a href="/beer/{{ popular[0] }}">{{ popular[1] }}</a>
+<br>
+<p>
+{% endfor %}
 <br>
 <form action="/profile/{{user_id}}">
 <button type = "submit">my profile</button><br>

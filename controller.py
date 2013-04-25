@@ -6,6 +6,7 @@ from flask.ext.login import LoginManager, current_user, login_required, login_us
 import model
 import math
 import operator
+import itertools
 app = Flask(__name__)
 app.secret_key = "obligatory_secret_key"
 
@@ -42,22 +43,16 @@ def home_display():
 	username = current_user.username
 	userid = current_user.id
 
-	# this shows the highest average rated beers that the user DID NOT rate
-	# may change this to highest average rated of all beers, rated or not
-	user_ratings = model.session.query(model.Rating).filter_by(user_id=userid).all()
-	rated_beers = []
-	for i in user_ratings:
-		rated_beers.append(i.beer_id)
-	not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers)).all()
-
-	other_ratings = []  #becomes a list of lists. each inner list has all ratings from other users.
-	for beer in not_rated:
-		others_ratings = beer.ratings
-		other_ratings.append(others_ratings)
+	# TO SHOW HIGHEST AVERAGE RATINGS, across all beers whether user has rated or not
+	all_beers = model.session.query(model.Beer).all()
+	all_ratings = []  #becomes a list of lists. each inner list has all ratings from other users.
+	for beer in all_beers:
+		list_ratings = beer.ratings
+		all_ratings.append(list_ratings)
 
 	averages = []
 	id_nums = []
-	for r in other_ratings:
+	for r in all_ratings:
 		rating_nums = []
 		for i in r:
 			beerid = i.beer_id
@@ -83,13 +78,25 @@ def home_display():
 		id_nm_avg_l.append((tuple1, tuple2, tuple3))
 	
 	id_nm_avg_ls = sorted(id_nm_avg_l, key=operator.itemgetter(1), reverse = True)
+	high_five = itertools.islice(id_nm_avg_ls, 0, 5) #lol, high five!
+
+	#TO SHOW THE MOST RATED / POPULAR BEERS
+	# all_beers = model.session.query(model.Beer).all()
+	# all_ratings = []  #becomes a list of lists. each inner list has all ratings from other users.
+	# for beer in all_beers:
+	# 	list_ratings = beer.ratings
+	# 	all_ratings.append(list_ratings)
+	# id_nr_lt = []  #stands for beer id, number of ratings, and list of tuples
+	# for beer in all_ratings:
+	# 	beer_id = beer[0].beer_id
+	# 	how_many = len(beer)
+	# 	id_nr_lt.append((beer_id, how_many))
+	# id_nr_lts = sorted(id_nr_lt, key=operator.itemgetter(1), reverse = True)
+	# popular_five = itertools.islice(id_nr_lts, 0, 5) #popular, like the plastics... or your mom
 
 	# whoa, i can't believe i wrote all that
-	# but when add a bunch more beers, only want to show like 5?
-	# would need to slice list and only display first 5
-
 	return render_template("home.html", user_name=username, user_id=userid,\
-		high_averages=id_nm_avg_ls)
+		high_averages=high_five, most_rated=popular_five)
 
 #DONE
 # to login

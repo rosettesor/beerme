@@ -1,7 +1,7 @@
 <html>
 <h2>hey {{ user_name }}, you've tasted {{ count }} beers</h2>
 <br>
-<h3>highest rated</h3>
+<h3>{{ user_name }}'s highest rated</h3>
 {% for high in high_rated %}
 beer: <a href="/beer/{{high.beer.id}}">{{high.beer.name}}</a><br>
 rating: {{ high.rating }}<br>
@@ -9,7 +9,7 @@ rating: {{ high.rating }}<br>
 {% endfor %}
 <h3><a href="/profile/ratings/{{id}}">see all ratings</a><br></h3>
 <br>
-<h3>my beer queue</h3>
+<h3>{{ user_name }}'s' beer queue</h3>
 {% for unrated in queue %}
 <a href="/beer/{{unrated.id}}">{{unrated.name}}</a><br>
 {% endfor %}
