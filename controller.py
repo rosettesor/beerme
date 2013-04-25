@@ -15,7 +15,7 @@ login_manager.init_app(app)
 login_manager.login_view="login"
 
 
-#DONE-
+#DONE
 @app.teardown_request
 def close_session(exception = None):
     model.session.remove()
@@ -46,8 +46,8 @@ def home_display():
 	# TO SHOW HIGHEST AVERAGE RATINGS, across all beers whether user has rated or not
 	# AND MOST RATED / POPULAR BEERS
 	all_beers = model.session.query(model.Beer).all()
-	all_ratings = []  #becomes a list of lists. each inner list has all ratings from other users.
-	for beer in all_beers:
+	all_ratings = []  #becomes a list of lists. each inner list has all ratings for particular beer
+	for beer in all_beers:	
 		list_ratings = beer.ratings
 		all_ratings.append(list_ratings)
 
@@ -82,9 +82,28 @@ def home_display():
 	sortby_len = sorted(id_avg_ln_nm, key=operator.itemgetter(2), reverse = True)
 	popular_five = itertools.islice(sortby_len, 0, 5) #popular, like the plastics... or your mom
 
+	# TO SHOW HIGHEST PREDICTION MATCHES
+	user_ratings = model.session.query(model.Rating).filter_by(user_id=userid).all()
+	rated_beers = []
+	for i in user_ratings:
+		rated_beers.append(i.beer_id)
+	not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
+
+	# ehhhh, not sure if i want the predictions to be in whole integers,
+	# inflated whole integers (rounded up), or 0.5's
+	predictions = []
+	for beer in not_rated:
+		prediction = current_user.predict_rating(beer)
+		mod_prediction = round(prediction/.5)*.5
+		beername = beer.name
+		beerid = beer.id
+		predictions.append((prediction, beername, beerid, mod_prediction))
+	high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
+	best_five = itertools.islice(high_prediction, 0, 5)
+
 	# whoa, i can't believe i wrote all that
 	return render_template("home.html", user_name=username, user_id=userid,\
-		high_averages=high_five, most_rated=popular_five)
+		high_averages=high_five, most_rated=popular_five, high_pred = best_five)
 
 #DONE
 # to login
@@ -210,7 +229,7 @@ def beer_profile(id):
 
 	# prediction code: only predict if the user hasn't rated yet
 	if user_rating is None:
-		prediction = int(round(current_user.predict_rating(beer))) 
+		prediction = round((current_user.predict_rating(beer))/.5)*.5
 	else:
 		prediction = user_rating.rating
 	# end prediction

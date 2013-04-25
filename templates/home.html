@@ -3,6 +3,12 @@
 <body>
 <br>
 <h3>beers with highest similarity coefficient to user</h3>
+{% for prediction in high_pred %}
+<a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
+<br>
+our guess for you: {{ "%.1f"%prediction[3] }} 
+<p>
+{% endfor %}
 <br>
 <h3>highest rated beers</h3>
 {% for average in high_averages %}
