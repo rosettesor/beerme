@@ -1,8 +1,31 @@
 <html>
-<h2>Ratings by User {{ ratings[0].user_id }} </h2>
+<h2>hey {{ user_name }}, here are your ratings for the {{ count }} beers you've tried</h2>
+<h3>... you drunk</h3>
+<br>
+<br>
 {% for rating in ratings %}
-Movie: {{ rating.movie.name }}<br>
-Rating: {{ rating.rating }}<br>
+beer: <a href="/beer/{{rating.beer.id}}">{{rating.beer.name}}</a><br>
+rating: {{ rating.rating }}<br>
 <p>
 {% endfor %}
+<br>
+<h3>wanna try more? how 'bout these:</h3> 
+{% for unrated in not_rated %}
+<a href="/beer/{{unrated.id}}">{{unrated.name}}</a><br>
+{% else %}
+<h4>have you tried our entire repertoire? suggest beers to add</h4>
+{% endfor %}
+<br>
+<br>
+<form action="/home">
+<button type = "submit">home</button><br>
+</form>
+<br>
+<form action="/profile/{{id}}">
+<button type = "submit">my profile</button><br>
+</form>
+<br>
+<form method = "GET" action="/logout">
+<button type = "submit">logout</button>
+</form>
 </html>

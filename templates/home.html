@@ -1,11 +1,18 @@
 <html>
-<h1>hey {{ user_name }} </h1>
+<h1>hey {{ user_name }}, how 'bout a beer?</h1>
 <body>
-beers with highest similarity coefficient to user<br>
 <br>
-show highest average rated beers by others<br>
+<h3>beers with highest similarity coefficient to user</h3>
 <br>
-show most rated beers (most number of ratings)<br>
+<h3>show highest average rated beers by others</h3>
+{% for average in high_averages %}
+beer: <a href="/beer/{{ average[0] }}">{{ average[2] }}</a>
+<br>
+average: {{ "%.2f"%average[1] }} 
+<p>
+{% endfor %}
+<br>
+<h3>show most rated beers (most number of ratings)</h3>
 <br>
 <form action="/profile/{{user_id}}">
 <button type = "submit">my profile</button><br>

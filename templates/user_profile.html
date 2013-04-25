@@ -7,6 +7,7 @@ beer: <a href="/beer/{{high.beer.id}}">{{high.beer.name}}</a><br>
 rating: {{ high.rating }}<br>
 <p>
 {% endfor %}
+<h3><a href="/profile/ratings/{{id}}">see all ratings</a><br></h3>
 <br>
 <h3>my beer queue</h3>
 {% for unrated in queue %}
@@ -23,10 +24,6 @@ rating: {{ high.rating }}<br>
 <br>
 <form action="/home">
 <button type = "submit">home</button><br>
-</form>
-<br>
-<form action="/profile/{{id}}">
-<button type = "submit">my profile</button><br>
 </form>
 <br>
 <form method = "GET" action="/logout">
