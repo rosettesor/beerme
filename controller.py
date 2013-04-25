@@ -44,55 +44,43 @@ def home_display():
 	userid = current_user.id
 
 	# TO SHOW HIGHEST AVERAGE RATINGS, across all beers whether user has rated or not
+	# AND MOST RATED / POPULAR BEERS
 	all_beers = model.session.query(model.Beer).all()
 	all_ratings = []  #becomes a list of lists. each inner list has all ratings from other users.
 	for beer in all_beers:
 		list_ratings = beer.ratings
 		all_ratings.append(list_ratings)
 
-	averages = []
-	id_nums = []
+	id_avg_ln = []  #stands for beer id, average, length
 	for r in all_ratings:
+		how_many = len(r)
 		rating_nums = []
 		for i in r:
 			beerid = i.beer_id
 			rating = i.rating
 			rating_nums.append(rating)
 			average = (float(sum(rating_nums))/len(rating_nums))
-		id_nums.append(beerid)
-		averages.append(average)
+		id_avg_ln.append((beerid, average, how_many))
 
-	id_avg_d = dict(zip(id_nums, averages))
-	id_avg_l = id_avg_d.items()
 	beernames = []
-	for i in id_avg_l:
+	for i in id_avg_ln:
 		beer = model.session.query(model.Beer).filter_by(id=i[0]).one()
 		beernames.append(beer.name)
-	id_nm_avg_d = dict(zip(id_avg_l, beernames))
+	id_avg_ln_nm_d = dict(zip(id_avg_ln, beernames))
 	
-	id_nm_avg_l = []
-	for key in id_nm_avg_d:
+	id_avg_ln_nm = []   #stands for beer id, average, length, name
+	for key in id_avg_ln_nm_d:
 		tuple1 = key[0]
 		tuple2 = key[1]
-		tuple3 = id_nm_avg_d[key]
-		id_nm_avg_l.append((tuple1, tuple2, tuple3))
+		tuple3 = key[2]
+		tuple4 = id_avg_ln_nm_d[key]
+		id_avg_ln_nm.append((tuple1, tuple2, tuple3, tuple4))
 	
-	id_nm_avg_ls = sorted(id_nm_avg_l, key=operator.itemgetter(1), reverse = True)
-	high_five = itertools.islice(id_nm_avg_ls, 0, 5) #lol, high five!
+	sortby_avg = sorted(id_avg_ln_nm, key=operator.itemgetter(1), reverse = True)
+	high_five = itertools.islice(sortby_avg, 0, 5) #lol, high five!
 
-	#TO SHOW THE MOST RATED / POPULAR BEERS
-	# all_beers = model.session.query(model.Beer).all()
-	# all_ratings = []  #becomes a list of lists. each inner list has all ratings from other users.
-	# for beer in all_beers:
-	# 	list_ratings = beer.ratings
-	# 	all_ratings.append(list_ratings)
-	# id_nr_lt = []  #stands for beer id, number of ratings, and list of tuples
-	# for beer in all_ratings:
-	# 	beer_id = beer[0].beer_id
-	# 	how_many = len(beer)
-	# 	id_nr_lt.append((beer_id, how_many))
-	# id_nr_lts = sorted(id_nr_lt, key=operator.itemgetter(1), reverse = True)
-	# popular_five = itertools.islice(id_nr_lts, 0, 5) #popular, like the plastics... or your mom
+	sortby_len = sorted(id_avg_ln_nm, key=operator.itemgetter(2), reverse = True)
+	popular_five = itertools.islice(sortby_len, 0, 5) #popular, like the plastics... or your mom
 
 	# whoa, i can't believe i wrote all that
 	return render_template("home.html", user_name=username, user_id=userid,\

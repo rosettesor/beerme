@@ -3,7 +3,7 @@
 <br>
 <h3>{{ user_name }}'s highest rated</h3>
 {% for high in high_rated %}
-beer: <a href="/beer/{{high.beer.id}}">{{high.beer.name}}</a><br>
+<a href="/beer/{{high.beer.id}}">{{high.beer.name}}</a><br>
 rating: {{ high.rating }}<br>
 <p>
 {% endfor %}
