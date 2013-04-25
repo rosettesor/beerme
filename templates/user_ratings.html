@@ -1,11 +1,11 @@
 <html>
-<h2>hey {{ user_name }}, here are your ratings for the {{ count }} beers you've tried</h2>
+<h2>hey {{ user_name }}, here are the ratings for the {{ count }} beers you've tried</h2>
 <h3>... you drunk</h3>
 <br>
 <br>
 {% for rating in ratings %}
-beer: <a href="/beer/{{rating.beer.id}}">{{rating.beer.name}}</a><br>
-rating: {{ rating.rating }}<br>
+<a href="/beer/{{rating.beer.id}}">{{rating.beer.name}}</a><br>
+your rating: {{ rating.rating }}<br>
 <p>
 {% endfor %}
 <br>

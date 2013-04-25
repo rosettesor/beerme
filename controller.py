@@ -15,19 +15,32 @@ login_manager.init_app(app)
 login_manager.login_view="login"
 
 
-#DONE
 @app.teardown_request
 def close_session(exception = None):
     model.session.remove()
 
 
-#DONE
 @login_manager.user_loader
 def load_user(id):
 	return model.session.query(model.User).get(id)
 
 
-#DONE
+# to login
+@app.route("/login")
+def login():
+	return render_template("login.html")
+
+
+# to authenticate user
+@app.route("/user_login", methods=["GET", "POST"])
+def user_login():
+    # if request.method == "POST" and "email" in request.form:
+    find_user = model.session.query(model.User).filter_by(email=request.form['email'], password=request.form['password']).first()
+    if login_user(find_user):
+        return redirect("/home")
+    return redirect("/login")
+
+
 # if logged in, sends to "home" page, but if not logged in, send to login page
 @app.route("/", methods = ['GET'])
 @login_required
@@ -94,32 +107,16 @@ def home_display():
 	predictions = []
 	for beer in not_rated:
 		prediction = current_user.predict_rating(beer)
-		mod_prediction = round(prediction/.5)*.5
+		mod_prediction = int(round(prediction))
 		beername = beer.name
 		beerid = beer.id
 		predictions.append((prediction, beername, beerid, mod_prediction))
 	high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
-	best_five = itertools.islice(high_prediction, 0, 5)
+	best_five = itertools.islice(high_prediction, 0, 8)
 
 	# whoa, i can't believe i wrote all that
 	return render_template("home.html", user_name=username, user_id=userid,\
 		high_averages=high_five, most_rated=popular_five, high_pred = best_five)
-
-#DONE
-# to login
-@app.route("/login")
-def login():
-	return render_template("login.html")
-
-
-# to authenticate user
-@app.route("/user_login", methods=["GET", "POST"])
-def user_login():
-    # if request.method == "POST" and "email" in request.form:
-    find_user = model.session.query(model.User).filter_by(email=request.form['email'], password=request.form['password']).first()
-    if login_user(find_user):
-        return redirect("/home")
-    return redirect("/login")
 
 
 # using flask login / wtforms, not working yet
@@ -218,6 +215,7 @@ def user_ratings(id):
 def beer_profile(id):
 	beer = model.session.query(model.Beer).get(id)
 	user_id = current_user.id
+
 	ratings = beer.ratings
 	rating_nums = []
 	user_rating = None
@@ -229,7 +227,7 @@ def beer_profile(id):
 
 	# prediction code: only predict if the user hasn't rated yet
 	if user_rating is None:
-		prediction = round((current_user.predict_rating(beer))/.5)*.5
+		prediction = int(round((current_user.predict_rating(beer))))
 	else:
 		prediction = user_rating.rating
 	# end prediction
@@ -238,6 +236,7 @@ def beer_profile(id):
 
 
 @app.route("/change_rating/<int:id>", methods = ["GET", "POST"])
+@login_required
 def change_rating(id):
 	beer = model.session.query(model.Beer).get(id)
 	rating_change = request.form['new_rating']
@@ -253,7 +252,7 @@ def change_rating(id):
 	model.session.commit()
 	return redirect(url_for("beer_profile", id=beer.id))
 
-
+# to logout
 @app.route("/logout", methods = ["GET"])
 @login_required
 def logout():

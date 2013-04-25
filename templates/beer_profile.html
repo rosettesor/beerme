@@ -1,6 +1,11 @@
 <html>
 <h2>{{ beer.name }}</h2>
-<h4> average rating: {{ "%.2f"%average }}</h4>
+brewer: {{ beer.brewer }}<br>
+region: {{ beer.origin }}<br>
+style: {{ beer.style }}<br>
+abv: {{ "%.2f"%beer.abv }}%<br>
+<a href={{beer.link}} target="_blank">{{ beer.link }}</a><br>
+<h4>average rating: {{ "%.2f"%average }}</h4>
 
 {% if user_rating %}
 <h4>your rating: {{ user_rating.rating }}</h4>

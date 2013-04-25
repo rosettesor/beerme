@@ -2,11 +2,11 @@
 <h1>hey {{ user_name }}, how 'bout a beer?</h1>
 <body>
 <br>
-<h3>beers with highest similarity coefficient to user</h3>
+<h3>beers we think you'll like</h3>
 {% for prediction in high_pred %}
 <a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
 <br>
-our guess for you: {{ "%.1f"%prediction[3] }} 
+our guess for you: {{ prediction[3] }} 
 <p>
 {% endfor %}
 <br>
