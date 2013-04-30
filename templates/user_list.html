@@ -1,6 +1,25 @@
 <html>
-<h3>See <a href="{{ url_for("my_ratings") }}">my Ratings</a></h3><br>
-{% for user in users %}
-<h3><a href="{{ url_for("user_ratings", id=user.id) }}">User {{ user.id }}</a>, age {{ user.age }} had {{ user.ratings|length }} ratings</h3>
+<h2>hey {{ user_name }}, you have {{ count }} beers to try</h2>
+<br>
+<br>
+{% for beer in queue %}
+<a href="/beer/{{ beer[2] }}">{{ beer[1] }}</a><br>
+our guess for you: {{ beer[3] }}<br>
+<p>
+{% else %}
+<h4>have you tried our entire repertoire? suggest beers to add</h4>
 {% endfor %}
+<br>
+<br>
+<form action="/home">
+<button type = "submit">home</button><br>
+</form>
+<br>
+<form action="/profile/{{id}}">
+<button type = "submit">my profile</button><br>
+</form>
+<br>
+<form method = "GET" action="/logout">
+<button type = "submit">logout</button>
+</form>
 </html>

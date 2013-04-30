@@ -1,4 +1,5 @@
 #BEERME
+# object inventory
 
 
 from flask import Flask, render_template, redirect, request, session, url_for, g
@@ -183,7 +184,14 @@ def user_profile(id):
 		user_name = current_user.username
 		user_id = current_user.id
 		high_rated = model.session.query(model.Rating).filter_by(user_id=id).order_by(model.Rating.rating.desc()).limit(4).all()
-		user_ratings = model.session.query(model.Rating).filter_by(user_id=id).all()
+		
+		all_ratings = model.session.query(model.Rating).filter_by(user_id=id).\
+			order_by(model.Rating.rating.desc()).all()
+		user_ratings = []
+		for r in all_ratings:
+			if r.rating != 0:
+				user_ratings.append(r)
+
 		how_many = len(user_ratings)
 		rated_beers = []
 		for i in user_ratings:
@@ -205,16 +213,34 @@ def user_profile(id):
 		high_pred = best_five, not_rated = not_rated)
 	return redirect("/home")
 
-# # add to user beer queue
-# @app.route("/profile/queue", methods = ["GET", "POST"])
-# @login_required
-# def add_queue(id):
-# 	if id == current_user.id:
-# 		user_ratings = model.session.query(model.Rating).filter_by(user_id=id, rating = None)
-# 		rated_beers = []
-# 		for i in user_ratings:
-# 			rated_beers.append(i.beer_id)
-# 		not_rated = model.session.query(model.Beer).\filter(~model.Beer.id.in_(rated_beers))
+
+# see all in user beer queue
+@app.route("/profile/queue/<int:id>", methods = ["GET", "POST"])
+@login_required
+def user_queue(id):
+	if id == current_user.id:
+		user_name = current_user.username
+		user_id = current_user.id
+		user_queue = model.session.query(model.Rating).filter_by(user_id=id, rating=0).all()
+		how_many = len(user_queue)
+		
+		in_queue = []
+		for i in user_queue:
+			in_queue.append(i.beer_id)
+		beer_queue = model.session.query(model.Beer).filter(model.Beer.id.in_(in_queue))
+		
+		predictions = []
+		for beer in beer_queue:
+			prediction = current_user.predict_rating(beer)
+			mod_prediction = int(round(prediction))
+			beername = beer.name
+			beerid = beer.id
+			predictions.append((prediction, beername, beerid, mod_prediction))
+		high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
+
+		return render_template("user_list.html", user_name = user_name, \
+			queue=high_prediction, count = how_many, id=user_id)
+
 
 # show all of user's ratings
 @app.route("/profile/ratings/<int:id>", methods = ["GET"])
@@ -223,8 +249,13 @@ def user_ratings(id):
 	if id == current_user.id:
 		user_name = current_user.username
 		user_id = current_user.id
-		user_ratings = model.session.query(model.Rating).filter_by(user_id=id).\
+		all_ratings = model.session.query(model.Rating).filter_by(user_id=id).\
 			order_by(model.Rating.rating.desc()).all()
+		user_ratings = []
+		for r in all_ratings:
+			if r.rating != 0:
+				user_ratings.append(r)
+
 		how_many = len(user_ratings)
 		rated_beers = []
 		for i in user_ratings:
@@ -253,28 +284,35 @@ def beer_profile(id):
 	beer = model.session.query(model.Beer).get(id)
 	user_id = current_user.id
 
-	ratings = beer.ratings
-	rating_nums = []
+	ratings = beer.ratings # all rating objects for a particular beer
+	rating_nums = [] # create list rating_nums
 	user_rating = None
-	for r in ratings:
-		if r.user_id == current_user.id:
-			user_rating = r
+	for r in ratings: # loop through each rating object in all rating objects
+		if r.rating != 0 and r.user_id == current_user.id: # does this rating belong to this user
+			user_rating = r # yes, yes it does
 		rating_nums.append(r.rating)
 	avg_rating = float(sum(rating_nums))/len(rating_nums)
 
+	my_rating = None
+	for x in ratings:
+		if x.rating == 0 and x.user_id == current_user.id:
+			my_rating = x
+
 	# only predict if the user hasn't rated yet
-	if user_rating is None:
+	if user_rating is None or my_rating:
 		not_rounded = current_user.predict_rating(beer)
 		prediction = int(round(not_rounded))
 	else:
 		prediction = user_rating.rating
 		not_rounded = user_rating.rating
 
+
 	# to identify beers with similar prediction coefficients
 	user_ratings = model.session.query(model.Rating).filter_by(user_id=current_user.id).all()
 	rated_beers = []
 	for i in user_ratings:
-		rated_beers.append(i.beer_id)
+		if i.rating != 0:
+			rated_beers.append(i.beer_id)
 	not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
 
 	other_predictions = []
@@ -283,15 +321,29 @@ def beer_profile(id):
 			other_prediction = current_user.predict_rating(unrated)
 			difference = fabs(other_prediction - not_rounded)
 			if difference < 0.5:
-				mod_prediction = int(round(prediction))
+				mod_prediction = int(round(other_prediction))
 				beername = unrated.name
 				beerid = unrated.id
 				other_predictions.append((other_prediction, beername, beerid, mod_prediction))
 	similar_three = itertools.islice(other_predictions, 0, 3)
 
 	return render_template("beer_profile.html", beer=beer, user_id=user_id,\
-		average=avg_rating, user_rating=user_rating, prediction=prediction,\
+		average=avg_rating, user_rating=user_rating, my_rating=my_rating, prediction=prediction,\
 		try_three=similar_three)
+
+
+@app.route("/add_queue/<int:id>", methods = ["GET", "POST"])
+@login_required
+def add_queue(id):
+	beer = model.session.query(model.Beer).get(id)
+	current_rating = model.session.query(model.Rating).filter(model.Rating.user_id==current_user.id, model.Rating.beer_id==beer.id).first()
+	if current_rating:
+		return redirect(url_for("beer_profile", id=beer.id))
+	else:
+		add_rating = model.Rating(user_id = current_user.id, beer_id = beer.id, rating = 0)
+		model.session.add(add_rating)
+		model.session.commit()
+		return redirect(url_for("beer_profile", id=beer.id))
 
 
 @app.route("/change_rating/<int:id>", methods = ["GET", "POST"])

@@ -11,16 +11,20 @@ abv: {{ "%.2f"%beer.abv }}%<br>
 <h4>your rating: {{ user_rating.rating }}</h4>
 <h2>change your rating</h2>
 
+{% elif my_rating %}
+<h4>our prediction for you: {{ prediction }}</h4>
+
 {% else %}
 <h4>our prediction for you: {{ prediction }}</h4>
+<form action="/add_queue/{{beer.id}}">
+<button type = "submit">add to queue</button>
+</form>
 <h2>rate this beer</h2>
-
 {% endif %}
 
 <form method = "POST" action="/change_rating/{{beer.id}}">
 rating: 
     <select name="new_rating">
-        <option value="0">0</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
