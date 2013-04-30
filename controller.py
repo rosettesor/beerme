@@ -5,14 +5,20 @@ from flask import Flask, render_template, redirect, request, session, url_for, g
 from flask.ext.login import LoginManager, current_user, login_required, login_user, logout_user
 import model
 import math
+from math import fabs
 import operator
 import itertools
+import os
+from forms import LoginForm
+
+
 app = Flask(__name__)
 app.secret_key = "obligatory_secret_key"
 
 login_manager=LoginManager()
 login_manager.init_app(app)
 login_manager.login_view="login"
+# going to want form = form for all decorators applicable
 
 
 @app.teardown_request
@@ -23,6 +29,18 @@ def close_session(exception = None):
 @login_manager.user_loader
 def load_user(id):
 	return model.session.query(model.User).get(id)
+
+
+# using flask login / wtforms, not working yet
+# @app.route("/login", methods=["GET", "POST"])
+# def login():
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         # login and validate the user...
+#         login_user(form.admin)
+#         flash("Logged in successfully.")
+#         return redirect(request.args.get("next") or url_for("index"))
+#     return render_template("login.html", form=form)
 
 
 # to login
@@ -102,8 +120,6 @@ def home_display():
 		rated_beers.append(i.beer_id)
 	not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
 
-	# ehhhh, not sure if i want the predictions to be in whole integers,
-	# inflated whole integers (rounded up), or 0.5's
 	predictions = []
 	for beer in not_rated:
 		prediction = current_user.predict_rating(beer)
@@ -112,23 +128,11 @@ def home_display():
 		beerid = beer.id
 		predictions.append((prediction, beername, beerid, mod_prediction))
 	high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
-	best_five = itertools.islice(high_prediction, 0, 8)
+	best_five = itertools.islice(high_prediction, 0, 5)
 
 	# whoa, i can't believe i wrote all that
 	return render_template("home.html", user_name=username, user_id=userid,\
 		high_averages=high_five, most_rated=popular_five, high_pred = best_five)
-
-
-# using flask login / wtforms, not working yet
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         # login and validate the user...
-#         login_user(form.admin)
-#         flash("Logged in successfully.")
-#         return redirect(request.args.get("next") or url_for("index"))
-#     return render_template("login.html", form=form)
 
 
 # to create a new account / signup
@@ -185,11 +189,32 @@ def user_profile(id):
 		for i in user_ratings:
 			rated_beers.append(i.beer_id)
 		not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
-		# in_queue = model.session.query(model.Rating).filter_by(user_id=id, rating=None)
+
+		predictions = []
+		for beer in not_rated:
+			prediction = current_user.predict_rating(beer)
+			mod_prediction = int(round(prediction))
+			beername = beer.name
+			beerid = beer.id
+			predictions.append((prediction, beername, beerid, mod_prediction))
+		high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
+		best_five = itertools.islice(high_prediction, 0, 5)
+
 		return render_template("user_profile.html", high_rated = high_rated, \
-		count = how_many, user_name = user_name, id=user_id, not_rated = not_rated)
+		count = how_many, user_name = user_name, id=user_id,\
+		high_pred = best_five, not_rated = not_rated)
 	return redirect("/home")
 
+# # add to user beer queue
+# @app.route("/profile/queue", methods = ["GET", "POST"])
+# @login_required
+# def add_queue(id):
+# 	if id == current_user.id:
+# 		user_ratings = model.session.query(model.Rating).filter_by(user_id=id, rating = None)
+# 		rated_beers = []
+# 		for i in user_ratings:
+# 			rated_beers.append(i.beer_id)
+# 		not_rated = model.session.query(model.Beer).\filter(~model.Beer.id.in_(rated_beers))
 
 # show all of user's ratings
 @app.route("/profile/ratings/<int:id>", methods = ["GET"])
@@ -205,8 +230,20 @@ def user_ratings(id):
 		for i in user_ratings:
 			rated_beers.append(i.beer_id)
 		not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
+		
+		predictions = []
+		for beer in not_rated:
+			prediction = current_user.predict_rating(beer)
+			mod_prediction = int(round(prediction))
+			beername = beer.name
+			beerid = beer.id
+			predictions.append((prediction, beername, beerid, mod_prediction))
+		high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
+		best_five = itertools.islice(high_prediction, 0, 5)
+
 		return render_template("user_ratings.html", user_name = user_name, \
-			ratings=user_ratings, count = how_many, not_rated = not_rated, id=user_id)
+			ratings=user_ratings, count = how_many, not_rated = not_rated,\
+			high_pred = best_five, id=user_id)
 
 
 # show profile for single beer
@@ -225,14 +262,36 @@ def beer_profile(id):
 		rating_nums.append(r.rating)
 	avg_rating = float(sum(rating_nums))/len(rating_nums)
 
-	# prediction code: only predict if the user hasn't rated yet
+	# only predict if the user hasn't rated yet
 	if user_rating is None:
-		prediction = int(round((current_user.predict_rating(beer))))
+		not_rounded = current_user.predict_rating(beer)
+		prediction = int(round(not_rounded))
 	else:
 		prediction = user_rating.rating
-	# end prediction
+		not_rounded = user_rating.rating
+
+	# to identify beers with similar prediction coefficients
+	user_ratings = model.session.query(model.Rating).filter_by(user_id=current_user.id).all()
+	rated_beers = []
+	for i in user_ratings:
+		rated_beers.append(i.beer_id)
+	not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
+
+	other_predictions = []
+	for unrated in not_rated:
+		if unrated.id != beer.id:
+			other_prediction = current_user.predict_rating(unrated)
+			difference = fabs(other_prediction - not_rounded)
+			if difference < 0.5:
+				mod_prediction = int(round(prediction))
+				beername = unrated.name
+				beerid = unrated.id
+				other_predictions.append((other_prediction, beername, beerid, mod_prediction))
+	similar_three = itertools.islice(other_predictions, 0, 3)
+
 	return render_template("beer_profile.html", beer=beer, user_id=user_id,\
-		average=avg_rating, user_rating=user_rating, prediction=prediction)
+		average=avg_rating, user_rating=user_rating, prediction=prediction,\
+		try_three=similar_three)
 
 
 @app.route("/change_rating/<int:id>", methods = ["GET", "POST"])

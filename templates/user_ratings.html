@@ -10,8 +10,11 @@ your rating: {{ rating.rating }}<br>
 {% endfor %}
 <br>
 <h3>wanna try more? how 'bout these:</h3> 
-{% for unrated in not_rated %}
-<a href="/beer/{{unrated.id}}">{{unrated.name}}</a><br>
+{% for prediction in high_pred %}
+<a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
+<br>
+our guess for you: {{ prediction[3] }} 
+<p>
 {% else %}
 <h4>have you tried our entire repertoire? suggest beers to add</h4>
 {% endfor %}

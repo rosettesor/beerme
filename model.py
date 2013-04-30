@@ -1,7 +1,4 @@
 # beerme
-# wtforms sites: http://pythonhosted.org/Flask-WTF/
-# http://flask.pocoo.org/docs/patterns/wtforms/
-# http://wtforms.simplecodes.com/docs/1.0.3/crash_course.html#displaying-errors
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
@@ -9,7 +6,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
-from flask.ext.wtf import Form
+from flask.ext.wtf import Form, BooleanField, Required
 from wtforms import TextField, validators as v, Form, BooleanField, PasswordField
 import os
 import correlation
@@ -71,7 +68,6 @@ class User(Base):
         ratings = self.ratings
         other_ratings = beer.ratings
         similarities = [ (self.similarity(r.user), r) for r in other_ratings ]
-        print similarities
         similarities.sort(reverse = True)
         similarities = [ sim for sim in similarities if sim[0] > 0 ]
         if not similarities:
@@ -110,15 +106,15 @@ class Rating(Base):
     user = relationship("User", backref=backref("ratings", order_by=id))
     beer = relationship("Beer", backref=backref("ratings", order_by=id))
 
-# # put on another file
-# class Registration(Form):
-#   email = TextField("email", validators=[v.required()])
-#   password = PasswordField("password",[v.required(), v.EqualTo('confirm', message='passwords must match')])
-#   confirm = PasswordField('repeat password')
-#   username = TextField("username", validators=[v.required()])
-#   age = TextField("age", validators=[v.required()])
-#   city = TextField("city", validators=[v.required()])
-#   state = TextField("state", validators=[v.required()])
+class Queue(Base):
+    __tablename__ = "queue"
+
+    id = Column(Integer, primary_key = True)
+    beer_id = Column(Integer, ForeignKey('beers.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+
+    user = relationship("User", backref=backref("queue", order_by=id))
+    beer = relationship("Beer", backref=backref("queue", order_by=id))
 
 
 def main():

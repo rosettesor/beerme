@@ -35,6 +35,21 @@ rating:
 </form>
 <br>
 <form action="/profile/{{user_id}}">
-<button type = "submit">my profile</button><br>
+<button type = "submit">my profile</button>
 </form>
+<br>
+<form action="/profile/queue/{{user_id}}">
+<button type = "submit">my queue</button>
+</form>
+<br>
+<h4>if you like this, you should also try...</h4>
+{% for similar in try_three %}
+<a href="/beer/{{ similar[2] }}">{{ similar[1] }}</a>
+<br>
+our guess for you: {{ similar[3] }} 
+<br>
+{% else %}
+<h4>see our entire listing for more</h4>
+<p>
+{% endfor %}
 </html>
