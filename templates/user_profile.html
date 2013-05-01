@@ -19,6 +19,7 @@ our guess for you: {{ prediction[3] }}
 {% else %}
 <h4>have you tried our entire repertoire? suggest beers to add</h4>
 {% endfor %}
+<h3><a href="/profile/predictions/{{id}}">see all predictions</a><br></h3>
 <br>
 <br>
 <form action="/home">
@@ -27,6 +28,10 @@ our guess for you: {{ prediction[3] }}
 <br>
 <form action="/profile/queue/{{id}}">
 <button type = "submit">my queue</button>
+</form>
+<br>
+<form action="/beers">
+<button type = "submit">all beers</button>
 </form>
 <br>
 <form method = "GET" action="/logout">

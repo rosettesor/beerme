@@ -46,6 +46,10 @@ rating:
 <button type = "submit">my queue</button>
 </form>
 <br>
+<form action="/beers">
+<button type = "submit">all beers</button>
+</form>
+<br>
 <h4>if you like this, you should also try...</h4>
 {% for similar in try_five %}
 <a href="/beer/{{ similar[2] }}">{{ similar[1] }}</a>

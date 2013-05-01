@@ -1,0 +1,65 @@
+<html>
+<h3>all of BeerMe's beers</h3> 
+<form method = "POST" action="/beers_display">
+<h4>sort beers by:</h4>
+    <select name="sort_beers">
+        <option value="name">name</option>
+        <option value="brewer">brewer</option>
+        <option value="origin">origin</option>
+        <option value="style">style</option>
+        <option value="abv">abv</option>
+        <option value="average">average rating</option>
+    </select>
+<button type = "submit">sort</button>
+</form>
+<br>
+{% if alphabetical %}
+{% for beer in alphabetical %}
+<a href="/beer/{{ beer.id }}">{{ beer.name }}</a>
+<br>
+{% endfor %}
+{% endif %}
+
+{% if by_brewer %}
+{% for beer in by_brewer %}
+{{ beer.brewer }}, <a href="/beer/{{ beer.id }}">{{ beer.name }}</a>
+<br>
+{% endfor %}
+{% endif %}
+
+{% if by_origin %}
+{% for beer in by_origin %}
+{{ beer.origin }}, <a href="/beer/{{ beer.id }}">{{ beer.name }}</a>
+<br>
+{% endfor %}
+{% endif %}
+
+{% if by_style %}
+{% for beer in by_style %}
+{{ beer.style }}, <a href="/beer/{{ beer.id }}">{{ beer.name }}</a>
+<br>
+{% endfor %}
+{% endif %}
+
+{% if by_abv %}
+{% for beer in by_abv %}
+{{ "%.2f"%beer.abv }}%,  <a href="/beer/{{ beer.id }}">{{ beer.name }}</a>
+<br>
+{% endfor %}
+{% endif %}
+
+{% if by_avg %}
+{% for beer in by_avg %}
+{{ "%.2f"%beer[1] }},  <a href="/beer/{{ beer[0] }}">{{ beer[2] }}</a>
+<br>
+{% endfor %}
+{% endif %}
+<br>
+<form action="/home">
+<button type = "submit">home</button><br>
+</form>
+<br>
+<form action="/profile/{{id}}">
+<button type = "submit">my profile</button><br>
+</form>
+</html>

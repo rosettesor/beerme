@@ -1,14 +1,5 @@
 <html>
-<h2>hey {{ user_name }}, here are the ratings for the {{ count }} beers you've tried</h2>
-<h3>... you drunk</h3>
-<br>
-<br>
-<h3>{{ user_name }}'s ratings</h3>
-{% for rating in ratings %}
-<a href="/beer/{{rating.beer.id}}">{{rating.beer.name}}</a><br>
-your rating: {{ rating.rating }}<br>
-<p>
-{% endfor %}
+<h2>hey {{ user_name }}, here are {{ count }} beers you can still try</h2>
 <br>
 <h3>wanna try more? how 'bout these:</h3> 
 {% for prediction in high_pred %}
