@@ -53,11 +53,13 @@ class User(Base):
         u_ratings = {}
         paired_ratings = []
         for r in self.ratings:
-            u_ratings[r.beer_id] = r
+            if r.rating != 0:
+                u_ratings[r.beer_id] = r
         for r in other.ratings:
-            u_r = u_ratings.get(r.beer_id)
-            if u_r:
-                paired_ratings.append( (u_r.rating, r.rating) )
+            if r.rating != 0:
+                u_r = u_ratings.get(r.beer_id)
+                if u_r:
+                    paired_ratings.append( (u_r.rating, r.rating) )
         if paired_ratings:
             return correlation.pearson(paired_ratings)
         else:
@@ -65,8 +67,8 @@ class User(Base):
 
 
     def predict_rating(self, beer):
-        ratings = self.ratings
-        other_ratings = beer.ratings
+        other_ratings = session.query(Rating).filter_by(beer_id=beer.id).\
+        filter(Rating.rating != 0).all()
         similarities = [ (self.similarity(r.user), r) for r in other_ratings ]
         similarities.sort(reverse = True)
         similarities = [ sim for sim in similarities if sim[0] > 0 ]
@@ -97,24 +99,20 @@ class Rating(Base):
     beer_id = Column(Integer, ForeignKey('beers.id'))
     user_id = Column(Integer, ForeignKey('users.id'))
     rating = Column(Integer, nullable=True)
-    rate_time = Column(Integer, nullable=True)
-
-    # think about a_pplication logic
-    # import time first, then time.strftime("%a, %d %b %Y %H:%M:%S +0000",\
-    # time.localtime(epoch)) Replace time.localtime with time.gmtime for GMT time.
 
     user = relationship("User", backref=backref("ratings", order_by=id))
     beer = relationship("Beer", backref=backref("ratings", order_by=id))
 
-class Queue(Base):
-    __tablename__ = "queue"
+# after discussion with christian - would have been better to create class
+# class Queue(Base):
+#     __tablename__ = "queue"
 
-    id = Column(Integer, primary_key = True)
-    beer_id = Column(Integer, ForeignKey('beers.id'))
-    user_id = Column(Integer, ForeignKey('users.id'))
+#     id = Column(Integer, primary_key = True)
+#     beer_id = Column(Integer, ForeignKey('beers.id'))
+#     user_id = Column(Integer, ForeignKey('users.id'))
 
-    user = relationship("User", backref=backref("queue", order_by=id))
-    beer = relationship("Beer", backref=backref("queue", order_by=id))
+#     user = relationship("User", backref=backref("queue", order_by=id))
+#     beer = relationship("Beer", backref=backref("queue", order_by=id))
 
 
 def main():

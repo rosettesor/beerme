@@ -1,16 +1,15 @@
 <html>
-<h2>hey {{ user_name }}, here are the ratings for the {{ count }} beers you've tried</h2>
-<h3>... you drunk</h3>
+<h2>hey {{ user_name }}, you have {{ count }} beers to try</h2>
 <br>
 <br>
-<h3>{{ user_name }}'s ratings</h3>
-{% for rating in ratings %}
-<a href="/beer/{{rating.beer.id}}">{{rating.beer.name}}</a><br>
-your rating: {{ rating.rating }}<br>
+<h3>{{ user_name }}'s queue</h3>
+{% for beer in queue %}
+<a href="/beer/{{ beer[2] }}">{{ beer[1] }}</a><br>
+our guess for you: {{ beer[3] }}<br>
 <p>
 {% endfor %}
 <br>
-<h3>wanna try more? how 'bout these:</h3> 
+<h3>want to add one of these to your queue?</h3> 
 {% for prediction in high_pred %}
 <a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
 <br>
@@ -27,10 +26,6 @@ our guess for you: {{ prediction[3] }}
 <br>
 <form action="/profile/{{id}}">
 <button type = "submit">my profile</button><br>
-</form>
-<br>
-<form action="/profile/queue/{{id}}">
-<button type = "submit">my queue</button>
 </form>
 <br>
 <form method = "GET" action="/logout">

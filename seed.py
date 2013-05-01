@@ -10,8 +10,7 @@ def load_users(session):
         reader = csv.reader(data, delimiter='|')  
         for row in reader: 
             user = model.User(id=row[0], email=row[1], password=row[2],\
-                name_first=row[3], name_last=row[4], age=row[5],\
-                city=row[6], state=row[7])
+                username=row[3], age=row[4], city=row[5], state=row[6])
             session.add(user)  
 
 
@@ -29,7 +28,7 @@ def load_ratings(session):
         reader = csv.reader(data, delimiter='|')
         for row in reader:
             rating = model.Rating(user_id=row[0], beer_id=row[1],\
-                rating=row[2], rate_time=row[3])
+                rating=row[2])
             session.add(rating)
 
 

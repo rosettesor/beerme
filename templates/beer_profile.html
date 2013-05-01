@@ -47,13 +47,12 @@ rating:
 </form>
 <br>
 <h4>if you like this, you should also try...</h4>
-{% for similar in try_three %}
+{% for similar in try_five %}
 <a href="/beer/{{ similar[2] }}">{{ similar[1] }}</a>
 <br>
 our guess for you: {{ similar[3] }} 
-<br>
+<p>
 {% else %}
 <h4>see our entire listing for more</h4>
-<p>
 {% endfor %}
 </html>

@@ -183,16 +183,16 @@ def user_profile(id):
 	if id == current_user.id:
 		user_name = current_user.username
 		user_id = current_user.id
-		high_rated = model.session.query(model.Rating).filter_by(user_id=id).order_by(model.Rating.rating.desc()).limit(4).all()
-		
 		all_ratings = model.session.query(model.Rating).filter_by(user_id=id).\
 			order_by(model.Rating.rating.desc()).all()
+		
 		user_ratings = []
 		for r in all_ratings:
 			if r.rating != 0:
 				user_ratings.append(r)
-
 		how_many = len(user_ratings)
+		high_rated = itertools.islice(user_ratings, 0, 5)
+
 		rated_beers = []
 		for i in user_ratings:
 			rated_beers.append(i.beer_id)
@@ -210,7 +210,7 @@ def user_profile(id):
 
 		return render_template("user_profile.html", high_rated = high_rated, \
 		count = how_many, user_name = user_name, id=user_id,\
-		high_pred = best_five, not_rated = not_rated)
+		high_pred = best_five)
 	return redirect("/home")
 
 
@@ -236,10 +236,27 @@ def user_queue(id):
 			beername = beer.name
 			beerid = beer.id
 			predictions.append((prediction, beername, beerid, mod_prediction))
-		high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
+		high_queue = sorted(predictions, key=operator.itemgetter(0), reverse = True)
 
-		return render_template("user_list.html", user_name = user_name, \
-			queue=high_prediction, count = how_many, id=user_id)
+		all_ratings = model.session.query(model.Rating).filter_by(user_id=id).\
+			order_by(model.Rating.rating.desc()).all()
+		rated_beers = []
+		for i in all_ratings:
+			rated_beers.append(i.beer_id)
+		not_queue = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
+
+		other_predictions = []
+		for beer in not_queue:
+			prediction = current_user.predict_rating(beer)
+			mod_prediction = int(round(prediction))
+			beername = beer.name
+			beerid = beer.id
+			other_predictions.append((prediction, beername, beerid, mod_prediction))
+		high_prediction = sorted(other_predictions, key=operator.itemgetter(0), reverse = True)
+		best_five = itertools.islice(high_prediction, 0, 5)
+
+		return render_template("user_queue.html", user_name = user_name, \
+			queue=high_queue, high_pred = best_five, count = how_many, id=user_id)
 
 
 # show all of user's ratings
@@ -288,10 +305,18 @@ def beer_profile(id):
 	rating_nums = [] # create list rating_nums
 	user_rating = None
 	for r in ratings: # loop through each rating object in all rating objects
-		if r.rating != 0 and r.user_id == current_user.id: # does this rating belong to this user
-			user_rating = r # yes, yes it does
-		rating_nums.append(r.rating)
-	avg_rating = float(sum(rating_nums))/len(rating_nums)
+		if r.rating != 0:
+			if r.user_id == current_user.id: # does this rating belong to this user
+				user_rating = r # yes, yes it does
+			rating_nums.append(r.rating)
+	avg_rating = float((sum(rating_nums))/(len(rating_nums)))
+
+	# # using list comprehension
+	# ratings = model.session.query(model.Rating).\
+	# 		  filter_by(beer_id=id).\
+	# 	  	  filter(model.Rating.rating != 0).\
+	# 	  	  all() # all rating objects for a particular beer
+	# rating_nums = [ r.rating for r in ratings ]
 
 	my_rating = None
 	for x in ratings:
@@ -325,11 +350,11 @@ def beer_profile(id):
 				beername = unrated.name
 				beerid = unrated.id
 				other_predictions.append((other_prediction, beername, beerid, mod_prediction))
-	similar_three = itertools.islice(other_predictions, 0, 3)
+	similar_five = itertools.islice(other_predictions, 0, 5)
 
 	return render_template("beer_profile.html", beer=beer, user_id=user_id,\
 		average=avg_rating, user_rating=user_rating, my_rating=my_rating, prediction=prediction,\
-		try_three=similar_three)
+		try_five=similar_five)
 
 
 @app.route("/add_queue/<int:id>", methods = ["GET", "POST"])
