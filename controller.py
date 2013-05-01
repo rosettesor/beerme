@@ -10,7 +10,7 @@ from math import fabs
 import operator
 import itertools
 import os
-from forms import LoginForm
+from forms import LoginForm, RegistrationForm
 
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ login_manager.login_view="login"
 
 @app.teardown_request
 def close_session(exception = None):
-    model.session.remove()
+	model.session.remove()
 
 
 @login_manager.user_loader
@@ -32,11 +32,11 @@ def load_user(id):
 	return model.session.query(model.User).get(id)
 
 
-# using flask login / wtforms, not working yet
+# # using flask login / wtforms, not working yet
 # @app.route("/login", methods=["GET", "POST"])
 # def login():
-#     form = LoginForm()
-#     if form.validate_on_submit():
+#     form = LoginForm(request.form)
+#     if request.method == 'POST' and form.validate():
 #         # login and validate the user...
 #         login_user(form.admin)
 #         flash("Logged in successfully.")
@@ -53,11 +53,11 @@ def login():
 # to authenticate user
 @app.route("/user_login", methods=["GET", "POST"])
 def user_login():
-    # if request.method == "POST" and "email" in request.form:
-    find_user = model.session.query(model.User).filter_by(email=request.form['email'], password=request.form['password']).first()
-    if login_user(find_user):
-        return redirect("/home")
-    return redirect("/login")
+	# if request.method == "POST" and "email" in request.form:
+	find_user = model.session.query(model.User).filter_by(email=request.form['email'], password=request.form['password']).first()
+	if login_user(find_user):
+		return redirect("/home")
+	return redirect("/login")
 
 
 # if logged in, sends to "home" page, but if not logged in, send to login page
@@ -134,6 +134,18 @@ def home_display():
 	# whoa, i can't believe i wrote all that
 	return render_template("home.html", user_name=username, user_id=userid,\
 		high_averages=high_five, most_rated=popular_five, high_pred = best_five)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+	username = current_user.id
+	form = RegistrationForm(request.form)
+	if request.method == 'POST' and form.validate():
+		user = User(form.username.data, form.email.data, form.password.data)
+		model.session.add(user)
+		flash('Thanks for registering')
+		return redirect(url_for('login'))
+	return render_template('register.html', form=form)
 
 
 # to create a new account / signup

@@ -103,6 +103,7 @@ class Rating(Base):
     user = relationship("User", backref=backref("ratings", order_by=id))
     beer = relationship("Beer", backref=backref("ratings", order_by=id))
 
+
 # after discussion with christian - would have been better to create class
 # class Queue(Base):
 #     __tablename__ = "queue"
