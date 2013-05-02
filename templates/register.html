@@ -1,15 +1,20 @@
 <html>
+<h2>sign up for BeerMe!</h2>
+<body>
 {% from "_formhelpers.html" import render_field %}
 <form method=post action="/register">
   <dl>
-  	{{ username }}
-    {{ render_field(form.username) }} 
-    {{ render_field(form.email) }}
-    {{ render_field(form.password) }}
-    {{ render_field(form.confirm) }}
-    {{ render_field(form.accept_tos) }}
 
+	what would you like us to call you? {{ form.username }}
+	{{ render_field(form.email) }}
+	{{ render_field(form.password) }}
+	<br>
+	not required...
+	{{ render_field(form.age) }}
+	{{ render_field(form.city) }}
+	{{ render_field(form.state) }}
   </dl>
-  <p><input type=submit value=Register>
+  <p><input type=submit value="next">
 </form>
+</body>
 </html>

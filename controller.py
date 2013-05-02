@@ -10,7 +10,9 @@ from math import fabs
 import operator
 import itertools
 import os
-from forms import LoginForm, RegistrationForm
+import forms
+import random
+from forms import LoginForm, RegistrationForm, AddBeerForm
 
 
 app = Flask(__name__)
@@ -19,7 +21,6 @@ app.secret_key = "obligatory_secret_key"
 login_manager=LoginManager()
 login_manager.init_app(app)
 login_manager.login_view="login"
-# going to want form = form for all decorators applicable
 
 
 @app.teardown_request
@@ -32,39 +33,89 @@ def load_user(id):
 	return model.session.query(model.User).get(id)
 
 
-# # using flask login / wtforms, not working yet
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     form = LoginForm(request.form)
-#     if request.method == 'POST' and form.validate():
-#         # login and validate the user...
-#         login_user(form.admin)
-#         flash("Logged in successfully.")
-#         return redirect(request.args.get("next") or url_for("index"))
-#     return render_template("login.html", form=form)
-
-
-# to login
-@app.route("/login")
-def login():
-	return render_template("login.html")
-
-
-# to authenticate user
-@app.route("/user_login", methods=["GET", "POST"])
-def user_login():
-	# if request.method == "POST" and "email" in request.form:
-	find_user = model.session.query(model.User).filter_by(email=request.form['email'], password=request.form['password']).first()
-	if login_user(find_user):
-		return redirect("/home")
-	return redirect("/login")
-
-
 # if logged in, sends to "home" page, but if not logged in, send to login page
 @app.route("/", methods = ['GET'])
 @login_required
 def index():
 	return redirect(url_for("home_display"))
+
+
+# to login
+@app.route("/login", methods=["GET", "POST"])
+def login():
+	form = LoginForm(request.form)
+	return render_template("login.html", form=form)
+
+
+#to authenticate/login user
+@app.route("/user_login", methods=["GET", "POST"])
+def user_login():
+	form = LoginForm(request.form)
+	if request.method == "POST" and form.validate():
+		find_user = model.session.query(model.User).filter_by(email=form.email.data, password=form.password.data).first()
+		if find_user: 
+			login_user(find_user)
+			return redirect(url_for('home_display'))
+	return render_template("login.html", form=form)
+
+
+# register new account, part 1 of 2
+@app.route("/register", methods=["GET", "POST"])
+def register():
+	form = RegistrationForm(request.form)
+	if request.method == 'POST' and form.validate():
+		user = model.User()
+		user.username = form.username.data
+		user.email = form.email.data
+		user.password = form.password.data
+		user.age = form.age.data
+		user.city = form.city.data
+		user.state = form.state.data
+		model.session.add(user)
+		model.session.commit()
+		return redirect(url_for('new_user'))
+	return render_template('register.html', form=form)
+
+
+# get more user info for account, part 2 of 2
+@app.route("/new_user", methods = ["GET", "POST"])
+def new_user():
+	all_beers = model.session.query(model.Beer).all()
+	rando_list = random.sample(range(len(all_beers)), 10)
+	first_half = rando_list[:len(rando_list)/2]
+	last_half = rando_list[len(rando_list)/2:]
+	
+	beernames = []
+	for i in rando_list:
+		beer = model.session.query(model.Beer).filter_by(id=i).first()
+		beernames.append(beer.name)
+	first_beers = beernames[:len(beernames)/2]
+	last_beers = beernames[len(beernames)/2:]
+
+	rando_beers1 = zip(first_half, first_beers)
+	rando_beers2 = zip(last_half, last_beers)
+	rando_beers = zip(rando_beers1, rando_beers2) # list of tuple pairs
+
+	return render_template('user_info.html', rando_beers=rando_beers)
+
+
+# enter user preferences into database
+@app.route("/user_info", methods = ["GET", "POST"])
+def user_info():
+	pass
+	# beer = model.session.query(model.Beer).get(id)
+	# rating_change = request.form['new_rating']
+	# current_rating = model.session.query(model.Rating).filter(model.Rating.user_id==current_user.id, model.Rating.beer_id==beer.id).first()
+	# if current_rating:
+	# 	current_rating.rating = rating_change
+	# else:
+	# 	new_rating = request.form['new_rating']
+	# 	add_rating = model.Rating(user_id = current_user.id, beer_id = beer.id, rating = new_rating)
+	# 	model.session.add(add_rating)
+	# 	model.session.commit()
+	# 	return redirect(url_for("beer_profile", id=beer.id))
+	# model.session.commit()
+	# return redirect(url_for("beer_profile", id=beer.id))
 
 
 # home/welcome page for logged in user
@@ -84,7 +135,7 @@ def home_display():
 		for r in beer.ratings:
 			if r.rating != 0:
 				list_ratings.append(r)
-	all_ratings.append(list_ratings)
+		all_ratings.append(list_ratings)
 
 	id_avg_ln = []  #stands for beer id, average, length
 	for r in all_ratings:
@@ -138,58 +189,6 @@ def home_display():
 	# whoa, i can't believe i wrote all that
 	return render_template("home.html", user_name=username, user_id=userid,\
 		high_averages=high_five, most_rated=popular_five, high_pred = best_five)
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-	username = current_user.id
-	form = RegistrationForm(request.form)
-	if request.method == 'POST' and form.validate():
-		user = User(form.username.data, form.email.data, form.password.data)
-		model.session.add(user)
-		flash('Thanks for registering')
-		return redirect(url_for('login'))
-	return render_template('register.html', form=form)
-
-
-# to create a new account / signup
-@app.route("/new_user")
-def new_user():
-	form = model.AddUserForm()
-	return render_template("new_user.html", form=form)
-
-
-# get user info for account, part 1 of 2
-@app.route("/save_user", methods=["POST"])
-def save_user():
-	# new_email = request.form['email']
-	# new_password = request.form['password']
-	# new_firstname = request.form['firstname']
-	# new_lastname = request.form['lastname']
-	# new_age = request.form['age']
-	# new_city = request.form['city']
-	# new_state = request.form['state']
-	# new_user = model.User(email=new_email, password=new_password, name_first=new_firstname,\
-	# 	name_last=new_lastname, age=new_age, city= new_city, state=new_state)
-	# model.session.add(new_user)
-	# model.session.commit()
-	# return redirect("/home")   
-
-	form = model.AddUserForm()
-	if form.validate_on_submit():
-	# OOOOORRRRRR if request.method == "POST" and form.validate():
-		user = User(email=form.email.data, password=form.password.data)
-		model.session.add(user)
-		model.session.commit()
-		return redirect("/home")
-	return render_template("new_user.html", form=form)
-
-
-# get more user info for account, part 2 of 2
-@app.route("/user_info", methods = ["GET", "POST"])
-def user_info():
-	pass 
-	return redirect("/home")
 
 
 # show user profile with how many tasted, beer queue, highest rated, and recently tasted
@@ -504,6 +503,27 @@ def change_rating(id):
 		return redirect(url_for("beer_profile", id=beer.id))
 	model.session.commit()
 	return redirect(url_for("beer_profile", id=beer.id))
+
+
+# add a beer
+@app.route("/new_beer", methods=["GET", "POST"])
+@login_required
+def new_beer():
+	form = AddBeerForm(request.form)
+	if request.method == 'POST' and form.validate():
+		beer = model.Beer()
+		beer.name = form.name.data
+		beer.brewer = form.brewer.data
+		beer.origin = form.origin.data
+		beer.style = form.style.data
+		beer.abv = form.abv.data
+		beer.link = form.link.data
+		beer.image = form.image.data
+		model.session.add(beer)
+		model.session.commit()
+		return redirect(url_for("all_beers"))
+	return render_template('new_beer.html', form=form)
+
 
 # to logout
 @app.route("/logout", methods = ["GET"])

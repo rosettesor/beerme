@@ -1,0 +1,19 @@
+<html>
+<h2>tell us about your taste</h2>
+<h3>would you prefer...</h3>
+<body>
+<form method = "POST" action="/user_info">
+{% for beer in rando_beers %}
+<input type="radio" name="beer1" id="beer1" value="beer1">
+<a href="/beer/{{ beer[0][0] }}">{{ beer[0][1] }}</a>
+<br>
+or
+<br>
+<input type="radio" name="beer2" id="beer2" value="beer2">
+<a href="/beer/{{ beer[1][0] }}">{{ beer[1][1] }}</a>
+<p>
+<br>
+{% endfor %}
+</form>
+</body>
+</html>

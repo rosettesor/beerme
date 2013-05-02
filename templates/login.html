@@ -2,11 +2,14 @@
 <h2>login</h2>
 <body>
 <h3>please enter email and password </h3>
+{% from "_formhelpers.html" import render_field %}
 <form method = "POST" action="/user_login">
-			<input type = "text" name = "email"></input> email <br> 
-            <input type = "text" name = "password"></input> password <br> 
-            <input type = "submit">
-    	</form>
-<h3><a href="{{ url_for("new_user") }}">create account</a></h3><br>
+  <dl>
+	{{ render_field(form.email) }}
+	{{ render_field(form.password) }}
+  </dl>
+  <p><input type=submit value="Beer Me!">
+</form>
+<h3><a href="{{ url_for("register") }}">create account</a></h3><br>
 </body>
 </html>

@@ -1,22 +1,7 @@
-from flask.ext.wtf import Form, PasswordField, BooleanField, validators, Required
+from flask.ext.wtf import Form, PasswordField, BooleanField, validators, Required, TextField
 from flask.ext.wtf.html5 import IntegerRangeField
-from wtforms import TextField, validators, Form, BooleanField, PasswordField
+from wtforms import TextField, validators as v, Form, BooleanField, PasswordField
 import model
-
-
-class LoginForm(Form):
-	email = TextField('email', [validators.Length(min=6, max=35)])
-	password = PasswordField('password', validators.Required())
-
-class RegistrationForm(Form):
-    username = TextField('Username', [validators.Length(min=4, max=25)])
-    email = TextField('Email Address', [validators.Length(min=6, max=35)])
-    password = PasswordField('New Password', [
-        validators.Required(),
-        validators.EqualTo('confirm', message='Passwords must match')
-    ])
-    confirm = PasswordField('Repeat Password')
-    accept_tos = BooleanField('I accept the TOS', [validators.Required()])
 
 
 # http://pythonhosted.org/Flask-WTF/
@@ -24,17 +9,25 @@ class RegistrationForm(Form):
 # http://wtforms.simplecodes.com/docs/1.0.3/crash_course.html#displaying-errors
 
 
-# class Registration(Form):
-#   email = TextField("email", validators=[v.required()])
-#   password = PasswordField("password",[v.required(), v.EqualTo('confirm', message='passwords must match')])
-#   confirm = PasswordField('repeat password')
-#   username = TextField("username", validators=[v.required()])
-#   age = TextField("age", validators=[v.required()])
-#   city = TextField("city", validators=[v.required()])
-#   state = TextField("state", validators=[v.required()])
+class LoginForm(Form):
+	email = TextField('email', validators=[v.required()])
+	password = PasswordField('password', validators=[v.required()])
 
 
-# BANGING
-# HEAD
-# AGAINST
-# WALL
+class RegistrationForm(Form):
+	username = TextField('username', validators=[v.Length(max=40), v.required()])
+	email = TextField('email', validators=[v.required()])
+	password = PasswordField('password', validators=[v.required()])
+	age = TextField('age')
+	city = TextField('city')
+	state = TextField('state')
+
+
+class AddBeerForm(Form):
+	name = TextField('name', validators=[v.required()])
+	brewer = TextField('brewer', validators=[v.required()])
+	origin = TextField('origin', validators=[v.required()])
+	style = TextField('style', validators=[v.required()])
+	abv = TextField('abv', validators=[v.Length(max=4), v.required()])
+	link = TextField('link', validators=[v.required()])
+	image = TextField('image', validators=[v.required()])

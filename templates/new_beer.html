@@ -1,0 +1,28 @@
+<html>
+<h2>add a beer to BeerMe!</h2>
+<body>
+<h3>BeerMe uses <a href="http://beeradvocate.com/" target="_blank">Beer Advocate</a> as a reference guide</h3>  
+{% from "_formhelpers.html" import render_field %}
+<form method=post action="/new_beer">
+  <dl>
+
+	{{ render_field(form.name) }}
+	{{ render_field(form.brewer) }}
+	{{ render_field(form.origin) }}
+	{{ render_field(form.style) }}
+	{{ render_field(form.abv) }}
+	{{ render_field(form.link) }}
+	{{ render_field(form.image) }}
+  </dl>
+  <p><input type=submit value="submit">
+</form>
+<br>
+<form action="/home">
+<button type = "submit">home</button>
+</form>
+<br>
+<form action="/profile/{{id}}">
+<button type = "submit">my profile</button>
+</form>
+</body>
+</html>
