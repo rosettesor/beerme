@@ -102,7 +102,8 @@ def new_user():
 # enter user preferences into database
 @app.route("/user_info", methods = ["GET", "POST"])
 def user_info():
-	pass
+	enter_rating = request.form['whichbeer']
+	print enter_rating
 	# beer = model.session.query(model.Beer).get(id)
 	# rating_change = request.form['new_rating']
 	# current_rating = model.session.query(model.Rating).filter(model.Rating.user_id==current_user.id, model.Rating.beer_id==beer.id).first()
@@ -151,7 +152,7 @@ def home_display():
 	beernames = []
 	for i in id_avg_ln:
 		beer = model.session.query(model.Beer).filter_by(id=i[0]).one()
-		beernames.append(beer.name)
+		beernames.append((beer.name, beer.image))
 	id_avg_ln_nm_d = dict(zip(id_avg_ln, beernames))
 	
 	id_avg_ln_nm = []   #stands for beer id, average, length, name
@@ -187,91 +188,88 @@ def home_display():
 	best_five = itertools.islice(high_prediction, 0, 5)
 
 	# whoa, i can't believe i wrote all that
-	return render_template("home.html", user_name=username, user_id=userid,\
+	return render_template("home.html", user_name=username, userid=userid,\
 		high_averages=high_five, most_rated=popular_five, high_pred = best_five)
 
 
 # show user profile with how many tasted, beer queue, highest rated, and recently tasted
-@app.route("/profile/<int:id>", methods = ["GET", "POST"])
+@app.route("/profile", methods = ["GET", "POST"])
 @login_required
-def user_profile(id):
-	if id == current_user.id:
-		user_name = current_user.username
-		user_id = current_user.id
-		all_ratings = model.session.query(model.Rating).filter_by(user_id=id).\
-			order_by(model.Rating.rating.desc()).all()
+def user_profile():
+	user_name = current_user.username
+	user_id = current_user.id
+	all_ratings = model.session.query(model.Rating).filter_by(user_id=current_user.id).\
+		order_by(model.Rating.rating.desc()).all()
 		
-		user_ratings = []
-		for r in all_ratings:
-			if r.rating != 0:
-				user_ratings.append(r)
-		how_many = len(user_ratings)
-		high_rated = itertools.islice(user_ratings, 0, 5)
+	user_ratings = []
+	for r in all_ratings:
+		if r.rating != 0:
+			user_ratings.append(r)
+	how_many = len(user_ratings)
+	high_rated = itertools.islice(user_ratings, 0, 5)
 
-		rated_beers = []
-		for i in user_ratings:
-			rated_beers.append(i.beer_id)
-		not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
+	rated_beers = []
+	for i in user_ratings:
+		rated_beers.append(i.beer_id)
+	not_rated = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
 
-		predictions = []
-		for beer in not_rated:
-			prediction = current_user.predict_rating(beer)
-			mod_prediction = int(round(prediction))
-			beername = beer.name
-			beerid = beer.id
-			predictions.append((prediction, beername, beerid, mod_prediction))
-		high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
-		best_five = itertools.islice(high_prediction, 0, 5)
+	predictions = []
+	for beer in not_rated:
+		prediction = current_user.predict_rating(beer)
+		mod_prediction = int(round(prediction))
+		beername = beer.name
+		beerid = beer.id
+		predictions.append((prediction, beername, beerid, mod_prediction))
+	high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
+	best_five = itertools.islice(high_prediction, 0, 5)
 
-		return render_template("user_profile.html", high_rated = high_rated, \
-		count = how_many, user_name = user_name, id=user_id,\
-		high_pred = best_five)
-	return redirect("/home")
+	return render_template("user_profile.html", high_rated = high_rated, \
+	count = how_many, user_name = user_name, userid=user_id,\
+	high_pred = best_five)
 
 
 # see all in user beer queue
-@app.route("/profile/queue/<int:id>", methods = ["GET", "POST"])
+@app.route("/profile/queue", methods = ["GET", "POST"])
 @login_required
-def user_queue(id):
-	if id == current_user.id:
-		user_name = current_user.username
-		user_id = current_user.id
-		user_queue = model.session.query(model.Rating).filter_by(user_id=id, rating=0).all()
-		how_many = len(user_queue)
+def user_queue():
+	user_name = current_user.username
+	user_id = current_user.id
+	user_queue = model.session.query(model.Rating).filter_by(user_id=current_user.id, rating=0).all()
+	how_many = len(user_queue)
 		
-		in_queue = []
-		for i in user_queue:
-			in_queue.append(i.beer_id)
-		beer_queue = model.session.query(model.Beer).filter(model.Beer.id.in_(in_queue))
+	in_queue = []
+	for i in user_queue:
+		in_queue.append(i.beer_id)
+	beer_queue = model.session.query(model.Beer).filter(model.Beer.id.in_(in_queue))
 		
-		predictions = []
-		for beer in beer_queue:
-			prediction = current_user.predict_rating(beer)
-			mod_prediction = int(round(prediction))
-			beername = beer.name
-			beerid = beer.id
-			predictions.append((prediction, beername, beerid, mod_prediction))
-		high_queue = sorted(predictions, key=operator.itemgetter(0), reverse = True)
+	predictions = []
+	for beer in beer_queue:
+		prediction = current_user.predict_rating(beer)
+		mod_prediction = int(round(prediction))
+		beername = beer.name
+		beerid = beer.id
+		predictions.append((prediction, beername, beerid, mod_prediction))
+	high_queue = sorted(predictions, key=operator.itemgetter(0), reverse = True)
 
-		all_ratings = model.session.query(model.Rating).filter_by(user_id=id).\
-			order_by(model.Rating.rating.desc()).all()
-		rated_beers = []
-		for i in all_ratings:
-			rated_beers.append(i.beer_id)
-		not_queue = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
+	all_ratings = model.session.query(model.Rating).filter_by(user_id=current_user.id).\
+		order_by(model.Rating.rating.desc()).all()
+	rated_beers = []
+	for i in all_ratings:
+		rated_beers.append(i.beer_id)
+	not_queue = model.session.query(model.Beer).filter(~model.Beer.id.in_(rated_beers))
 
-		other_predictions = []
-		for beer in not_queue:
-			prediction = current_user.predict_rating(beer)
-			mod_prediction = int(round(prediction))
-			beername = beer.name
-			beerid = beer.id
-			other_predictions.append((prediction, beername, beerid, mod_prediction))
-		high_prediction = sorted(other_predictions, key=operator.itemgetter(0), reverse = True)
-		best_five = itertools.islice(high_prediction, 0, 5)
+	other_predictions = []
+	for beer in not_queue:
+		prediction = current_user.predict_rating(beer)
+		mod_prediction = int(round(prediction))
+		beername = beer.name
+		beerid = beer.id
+		other_predictions.append((prediction, beername, beerid, mod_prediction))
+	high_prediction = sorted(other_predictions, key=operator.itemgetter(0), reverse = True)
+	best_five = itertools.islice(high_prediction, 0, 5)
 
-		return render_template("user_queue.html", user_name = user_name, \
-			queue=high_queue, high_pred = best_five, count = how_many, id=user_id)
+	return render_template("user_queue.html", user_name = user_name, \
+		queue=high_queue, high_pred = best_five, count = how_many, userid=user_id)
 
 
 # show all of user's ratings
@@ -306,7 +304,7 @@ def user_ratings(id):
 
 		return render_template("user_ratings.html", user_name = user_name, \
 			ratings=user_ratings, count = how_many, not_rated = not_rated,\
-			high_pred = best_five, id=user_id)
+			high_pred = best_five, userid=user_id)
 
 
 # show all unrated beers, ordered by prediction
@@ -338,10 +336,11 @@ def user_predictions(id):
 			beerid = beer.id
 			predictions.append((prediction, beername, beerid, mod_prediction))
 		high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
+		top_twenty = itertools.islice(high_prediction, 0, 20)
 
 		return render_template("user_predictions.html", user_name = user_name, \
 			ratings=user_ratings, count = how_many, not_rated = not_rated,\
-			high_pred = high_prediction, id=user_id)
+			high_pred = top_twenty, userid=user_id)
 
 
 # show all beers in database
@@ -350,7 +349,7 @@ def user_predictions(id):
 def all_beers():
 	userid = current_user.id
 	alphabetical = model.session.query(model.Beer).order_by(model.Beer.name).all()
-	return render_template("all_beers.html", alphabetical=alphabetical, id=userid)
+	return render_template("all_beers.html", alphabetical=alphabetical, userid=userid)
 
 
 @app.route("/beers_display", methods = ["GET", "POST"])
@@ -408,7 +407,7 @@ def beers_display():
 			id_avg_nm.append((tuple1, tuple2, tuple3))
 	
 		sortby_avg = sorted(id_avg_nm, key=operator.itemgetter(1), reverse = True)
-		return render_template("all_beers.html", by_avg=sortby_avg, id=userid)
+		return render_template("all_beers.html", by_avg=sortby_avg, userid=userid)
 
 # show profile for single beer
 @app.route("/beer/<int:id>", methods = ["GET", "POST"])
@@ -468,7 +467,7 @@ def beer_profile(id):
 				other_predictions.append((other_prediction, beername, beerid, mod_prediction))
 	similar_five = itertools.islice(other_predictions, 0, 5)
 
-	return render_template("beer_profile.html", beer=beer, user_id=user_id,\
+	return render_template("beer_profile.html", beer=beer, userid=user_id,\
 		average=avg_rating, user_rating=user_rating, my_rating=my_rating, prediction=prediction,\
 		try_five=similar_five)
 

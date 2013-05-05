@@ -1,14 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
 <html>
-<h2>hey {{ user_name }}, you have {{ count }} beers to try</h2>
-<br>
-<br>
+<body>
+<div class="span12 big_head">
+<h1>{{ user_name }}, you have {{ count }} beers to try</h1>
+</div>
+<div class="span3 content-box">
 <h3>{{ user_name }}'s queue</h3>
 {% for beer in queue %}
 <a href="/beer/{{ beer[2] }}">{{ beer[1] }}</a><br>
 our guess for you: {{ beer[3] }}<br>
-<p>
+<p> 
 {% endfor %}
 <br>
+not sure what to try?<br>
+check out <a href="/profile/predictions/{{userid}}">your predictions</a> page for beers you'll love
+</div>
+<div class="span8 content-box">
 <h3>want to add one of these to your queue?</h3> 
 {% for prediction in high_pred %}
 <a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
@@ -18,21 +26,7 @@ our guess for you: {{ prediction[3] }}
 {% else %}
 <h4>have you tried our entire repertoire? suggest beers to add</h4>
 {% endfor %}
-<br>
-<br>
-<form action="/home">
-<button type = "submit">home</button><br>
-</form>
-<br>
-<form action="/profile/{{id}}">
-<button type = "submit">my profile</button><br>
-</form>
-<br>
-<form action="/beers">
-<button type = "submit">all beers</button>
-</form>
-<br>
-<form method = "GET" action="/logout">
-<button type = "submit">logout</button>
-</form>
+</div>
+</body>
 </html>
+{% endblock %}

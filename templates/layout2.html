@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BeerMe</title>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" media="screen">
+    <!-- your css bootstrap overrides css here -->
+    <link href="{{ url_for('static', filename='css/css_overrides.css') }}" rel="stylesheet" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Pacifico|Roboto+Slab' rel='stylesheet' type='text/css'>
+  </head>
+    <body>
+    <div id="wrap">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <h1><span id="big_name"><a href="/">BeerMe</a></span></h1>
+      </div>
+    </div>
+        <div class = "container-fluid">
+            <img src={{ url_for('static', filename="img/beer.jpg") }} id="bg">
+            <div class="row-fluid">
+            <div class="span12" id="top_padding"></div>
+                <div>
+                  {% block body %}
+                  {% endblock %}
+                </div>
+            </div>
+            </div>
+        </div>
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">BeerMe was designed and built by <a href="https://github.com/rosettesor" target="_blank">Rosette Diaz</a>. Please <a href="http://www.rosettekdiaz.com/?page_id=2" target="_blank">contact</a> for suggestions. Thanks for looking!</p>
+      </div>
+    </div>
+    </div>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script> 
+    </body>
+</html>

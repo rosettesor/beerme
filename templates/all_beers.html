@@ -1,8 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
 <html>
-<h3>all of BeerMe's beers</h3> 
+<div class="span11 big_head">
+<h1>all of BeerMe's beers</h1> 
+</div>
+<div class="robo-text">
 <form method = "POST" action="/beers_display">
 <h4>sort beers by:</h4>
-    <select name="sort_beers">
+    <select name="robo-text sort_beers">
         <option value="name">name</option>
         <option value="brewer">brewer</option>
         <option value="origin">origin</option>
@@ -10,9 +15,11 @@
         <option value="abv">abv</option>
         <option value="average">average rating</option>
     </select>
-<button type = "submit">sort</button>
+    <br>
+<button class="btn btn-small btn-primary robo-text" type="submit">sort!</button>
 </form>
-<br>
+</div>
+<div class="span7 content-box">
 {% if alphabetical %}
 {% for beer in alphabetical %}
 <a href="/beer/{{ beer.id }}">{{ beer.name }}</a>
@@ -54,14 +61,9 @@
 <br>
 {% endfor %}
 {% endif %}
-<br>
-<h3><a href="/new_beer">want to add a beer?</a><br></h3>
-<br>
-<form action="/home">
-<button type = "submit">home</button><br>
-</form>
-<br>
-<form action="/profile/{{id}}">
-<button type = "submit">my profile</button><br>
-</form>
+</div>
+<div class="content-boxm center span4">
+<h4>want to <a href="/new_beer">add a beer</a> to our list?</h4>
+</div>
 </html>
+{% endblock %}

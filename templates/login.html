@@ -1,15 +1,24 @@
+{% extends "layout.html" %}
+{% block body %}
 <html>
-<h2>login</h2>
 <body>
-<h3>please enter email and password </h3>
+<div class="container-fluid need-head">
 {% from "_formhelpers.html" import render_field %}
 <form method = "POST" action="/user_login">
   <dl>
-	{{ render_field(form.email) }}
-	{{ render_field(form.password) }}
+  	<div class="row-fluid">
+  		<div class="span4">
+	<input type="text" class="robo-text input-block-level" placeholder="email" {{ (form.email) }}
+	<input type="password" class="robo-text input-block-level" placeholder="password" {{ (form.password) }}
   </dl>
-  <p><input type=submit value="Beer Me!">
+  <p><button class="btn btn-large btn-primary robo-text" type="submit">BeerMe!</button>
 </form>
-<h3><a href="{{ url_for("register") }}">create account</a></h3><br>
+</div>
+<div class="span6"
+</div>
+</div>
+<div class="robo-text"><h3><a href="{{ url_for("register") }}">join BeerMe!</a></h3><br></div>
+</div>
 </body>
 </html>
+{% endblock %}

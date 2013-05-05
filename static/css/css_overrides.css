@@ -1,0 +1,131 @@
+/*Background image that will fill the page regardless of browser size.*/
+#bg {
+  opacity: 0.7;
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  z-index:-100; 
+  /* Preserve aspect ratio */
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#big_name {
+  font-family: 'Pacifico', cursive;
+  font-style: italic;
+  font-size: 55px;
+  color: #ebf2fa;
+  width: 300px;
+  float: left;
+  padding: 10px 10px 15px 50px;
+}
+
+.content-boxm {
+  background-color: rgba(242, 241, 238, 0.6);
+  padding: 10px 10px 10px 10px;
+  font-family:'Roboto Slab', serif; 
+  border-radius: 20px; 
+  margin-bottom: 10px; 
+  margin-top: 10px;
+}
+
+.content-boxmb {
+  position: relative;
+  float: right;
+  padding: 10px 30px 10px 10px;
+  font-family:'Roboto Slab', serif; 
+  margin-bottom: 10px; 
+  margin-top: 10px;
+  margin-left: 10px;
+  max-width: 275px;
+  word-wrap: break-word;
+}
+
+.content-box-width {
+  background-color: rgba(242, 241, 238, 0.6);
+  padding: 10px 20px 20px 20px;
+  font-family:'Roboto Slab', serif; 
+  border-radius: 20px; 
+  margin-bottom: 10px; 
+  margin-top: 10px;
+  min-width: 600px;
+}
+
+.content-box {
+  background-color: rgba(242, 241, 238, 0.6);
+  padding: 10px 20px 20px 20px;
+  font-family:'Roboto Slab', serif; 
+  border-radius: 20px; 
+  margin-bottom: 10px; 
+  margin-top: 10px;
+}
+
+.content-boxs {
+  background-color: rgba(242, 241, 238, 0.85);
+  padding: 10px 20px 20px 20px;
+  font-family:'Roboto Slab', serif; 
+  border-radius: 20px; 
+  margin-bottom: 10px; 
+  margin-top: 10px;
+  min-width: 260px;
+}
+
+.need-head {
+  margin-top: 90px;
+}
+
+.robo-textn {
+  padding-top: 15px;
+  padding-right: 50px;
+  font-family: 'Roboto Slab', serif;
+  font-size: 20px;
+  font-color: #ebf2fa;
+}
+
+.robo-text {
+  font-family: 'Roboto Slab', serif;
+  color: #ebf2fa;
+}
+
+.big_head {
+  padding-top: 70px;
+  padding-bottom: 20px;
+  font-family: 'Pacifico', cursive;
+  color: #0b1a2b;
+}
+
+.image-box {
+  position: relative;
+  float: left;
+  height: 250px;
+  width: 200px;
+  margin-bottom: 20px; 
+  margin-top: 10px;
+  margin-left: 20px;
+  border-radius: 20px;
+}
+
+.image-box img {
+  padding: 10px;
+  background-color: rgba(242, 241, 238, 0.85);
+  border-radius: 20px;
+  height: 100%;
+}
+
+.center {
+  text-align: center;
+}
+
+#footer {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  height:20px;
+  background-color: black;
+  font-size: 12px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-family: 'Roboto Slab', serif;
+  text-align: center;
+}

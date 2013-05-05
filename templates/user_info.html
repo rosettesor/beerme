@@ -1,19 +1,27 @@
+{% extends "layout2.html" %}
+{% block body %}
 <html>
-<h2>tell us about your taste</h2>
+<div class="span12 big_head">
+<h1>almost there... tell us about your taste</h1>
+</div>
+<div class="span8 content-box">
 <h3>would you prefer...</h3>
 <body>
 <form method = "POST" action="/user_info">
 {% for beer in rando_beers %}
-<input type="radio" name="beer1" id="beer1" value="beer1">
+<input type="radio" name="beer{{loop.index}}" id="beer1" value="whichbeer">
 <a href="/beer/{{ beer[0][0] }}">{{ beer[0][1] }}</a>
 <br>
 or
 <br>
-<input type="radio" name="beer2" id="beer2" value="beer2">
+<input type="radio" name="beer{{loop.index}}" id="beer2" value="whichbeer">
 <a href="/beer/{{ beer[1][0] }}">{{ beer[1][1] }}</a>
 <p>
 <br>
 {% endfor %}
+<button class="btn btn-small btn-primary robo-text" type="submit">submit</button>
 </form>
+</div>
 </body>
 </html>
+{% endblock %}

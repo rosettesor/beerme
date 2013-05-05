@@ -1,10 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
 <html>
-<h2>{{ beer.name }}</h2>
-brewer: {{ beer.brewer }}<br>
-region: {{ beer.origin }}<br>
-style: {{ beer.style }}<br>
-abv: {{ "%.2f"%beer.abv }}%<br>
-<a href={{beer.link}} target="_blank">{{ beer.link }}</a><br>
+<div class="need-head"></div>
+<div class="span8 content-box-width">
+<h1>{{ beer.name }}</h1>
+<div class="img image-box">
+<img src="{{ beer.image }}" />
+</div>
+<div class="content-boxmb">
+<h4>brewer: {{ beer.brewer }}</h4>
+<h4>region: {{ beer.origin }}</h4>
+<h4>style: {{ beer.style }}</h4>
+<h4>abv: {{ "%.2f"%beer.abv }}%</h4>
+<h4><a href={{beer.link}} target="_blank">{{ beer.link }}</a></h4>
+</div>
+</div>
+<div class="span3 content-boxs">
 <h4>average rating: {{ "%.2f"%average }}</h4>
 
 {% if user_rating %}
@@ -12,18 +23,18 @@ abv: {{ "%.2f"%beer.abv }}%<br>
 <h2>change your rating</h2>
 
 {% elif my_rating %}
-<h4>our prediction for you: {{ prediction }}</h4>
+<h4>our guess for you: {{ prediction }}</h4>
+<h2>rate this beer</h2>
 
 {% else %}
-<h4>our prediction for you: {{ prediction }}</h4>
+<h4>our guess for you: {{ prediction }}</h4>
 <form action="/add_queue/{{beer.id}}">
-<button type = "submit">add to queue</button>
+<button class="btn btn-large btn-primary robo-text" type="submit">add to queue!</button>
 </form>
 <h2>rate this beer</h2>
 {% endif %}
 
 <form method = "POST" action="/change_rating/{{beer.id}}">
-rating: 
     <select name="new_rating">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -31,25 +42,10 @@ rating:
         <option value="4">4</option>
         <option value="5">5</option>
     </select>
-<input type = "submit">
+<button class="btn btn-small btn-primary robo-text" type="submit">submit</button>
 </form>
-<br>
-<form action="/home">
-<button type = "submit">home</button><br>
-</form>
-<br>
-<form action="/profile/{{user_id}}">
-<button type = "submit">my profile</button>
-</form>
-<br>
-<form action="/profile/queue/{{user_id}}">
-<button type = "submit">my queue</button>
-</form>
-<br>
-<form action="/beers">
-<button type = "submit">all beers</button>
-</form>
-<br>
+</div>
+<div class="span11 content-box">
 <h4>if you like this, you should also try...</h4>
 {% for similar in try_five %}
 <a href="/beer/{{ similar[2] }}">{{ similar[1] }}</a>
@@ -59,4 +55,9 @@ our guess for you: {{ similar[3] }}
 {% else %}
 <h4>see our entire listing for more</h4>
 {% endfor %}
+</div>
+<div class="content-boxm center span4">
+<h4>want to see <a href="/beers">all</a> of our beers?</h4>
+</div>
 </html>
+{% endblock %}

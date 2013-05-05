@@ -1,8 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
 <html>
-<h1>hey {{ user_name }}, how 'bout a beer?</h1>
 <body>
-<br>
-<h3>beers we think you'll like</h3>
+<div class="span11 big_head">
+<h1>hey {{ user_name }}, how 'bout a beer?</h1>
+</div>
+<div class="span11 content-box">
+<h3>our suggestions for you</h3>
 {% for prediction in high_pred %}
 <a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
 <br>
@@ -11,37 +15,29 @@ our guess for you: {{ prediction[3] }}
 {% else %}
 have you tried them all? add some beers!
 {% endfor %}
-<br>
+</div>
+<div class="span11 content-box">
 <h3>highest rated beers</h3>
 {% for average in high_averages %}
-<a href="/beer/{{ average[0] }}">{{ average[3] }}</a>
+<a href="/beer/{{ average[0] }}">{{ average[3][0] }}</a>
 <br>
 average: {{ "%.2f"%average[1] }} 
 <p>
 {% endfor %}
-<br>
+</div>
+<div class="span11 content-box">
 <h3>most rated beers</h3>
 {% for popular in most_rated %}
-<a href="/beer/{{ popular[0] }}">{{ popular[3] }}</a>
+<div class="img image-box">
+<a href="/beer/{{ popular[0] }}"><img src="{{ popular[3][1] }}" /></a>
+{{ popular[3][0] }}
 <br>
 average: {{ "%.2f"%popular[1] }} 
-<p>
 {% endfor %}
-<br>
-<form action="/profile/{{user_id}}">
-<button type = "submit">my profile</button><br>
-</form>
-<br>
-<form action="/profile/queue/{{user_id}}">
-<button type = "submit">my queue</button>
-</form>
-<br>
-<form action="/beers">
-<button type = "submit">all beers</button>
-</form>
-<br>
-<form method = "GET" action="/logout">
-<button type = "submit">logout</button>
-</form>
+</div>
+<div class="content-boxm center span5 offset3">
+<h4>want to see the <a href="/beers">full list</a> of BeerMe's beers?</h4>
+</div>
 </body>
 </html>
+{% endblock %}

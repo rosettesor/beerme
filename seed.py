@@ -19,7 +19,8 @@ def load_beers(session):
         reader = csv.reader(data, delimiter='|')
         for row in reader:
             beer = model.Beer(id=row[0], name=row[1], brewer=row[2],\
-                origin=row[3], style=row[4], abv=row[5], link=row[6])
+                origin=row[3], style=row[4], abv=row[5], link=row[6],\
+                image=row[7])
             session.add(beer)
 
 

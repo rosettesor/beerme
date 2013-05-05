@@ -1,16 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
 <html>
-<h2>hey {{ user_name }}, you've had {{ count }} beers</h2>
-<h3>... geez, take it easy</h3>
-<br>
+<div class="span12 big_head">
+<h1>{{ user_name }}, you've had {{ count }} beers</h1>
+</div>
+<div class="span3 content-box">
 <h3>{{ user_name }}'s highest rated</h3>
 {% for high in high_rated %}
 <a href="/beer/{{high.beer.id}}">{{high.beer.name}}</a><br>
 rating: {{ high.rating }}<br>
 <p>
 {% endfor %}
-<h3><a href="/profile/ratings/{{id}}">see all ratings</a><br></h3>
-<br>
-<h3>you should try...</h3> 
+<h3><a href="/profile/ratings/{{userid}}">see all ratings</a><br></h3>
+</div>
+<div class="span8 content-box">
+<h3>beers we think you'll like</h3> 
 {% for prediction in high_pred %}
 <a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
 <br>
@@ -19,22 +23,7 @@ our guess for you: {{ prediction[3] }}
 {% else %}
 <h4>have you tried our entire repertoire? suggest beers to add</h4>
 {% endfor %}
-<h3><a href="/profile/predictions/{{id}}">see all predictions</a><br></h3>
-<br>
-<br>
-<form action="/home">
-<button type = "submit">home</button><br>
-</form>
-<br>
-<form action="/profile/queue/{{id}}">
-<button type = "submit">my queue</button>
-</form>
-<br>
-<form action="/beers">
-<button type = "submit">all beers</button>
-</form>
-<br>
-<form method = "GET" action="/logout">
-<button type = "submit">logout</button>
-</form>
+<h3><a href="/profile/predictions/{{userid}}">see all recommendations</a></h3>
+</div>
 </html>
+{% endblock %}

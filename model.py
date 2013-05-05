@@ -89,7 +89,7 @@ class Beer(Base):
     style = Column(String(64), nullable=True)
     abv = Column(Integer, nullable=True)
     link = Column(String(64), nullable=True)
-    image = Column(String(64), nullable=True)
+    image = Column(String(100), nullable=True)
 
 
 class Rating(Base):
