@@ -3,38 +3,65 @@
 <html>
 <body>
 <div class="span11 big_head">
-<h1>hey {{ user_name }}, how 'bout a beer?</h1>
+	<h1>hey {{ user_name }}, how 'bout a beer?</h1>
 </div>
-<div class="span11 content-box">
-<h3>our suggestions for you</h3>
-{% for prediction in high_pred %}
-<a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
-<br>
-our guess for you: {{ prediction[3] }} 
-<p>
-{% else %}
-have you tried them all? add some beers!
-{% endfor %}
+
+<div class = "span11 row">
+	<div class="span11 content-boxw">
+		<h3>our suggestions for you</h3>
+		{% for prediction in high_pred %}
+			<div class="span2">
+				<div class="content-boxmm wordwrap">
+					<div class="img image-boxs clearfix">
+						<a href="/beer/{{ prediction[2] }}"><img src="{{ prediction[4] }}"/></a>
+					</div>
+					{{ prediction[1] }}
+					<br>
+					our guess for you: {{ prediction[3] }} 
+				</div>
+			</div>
+		{% else %}
+		have you tried them all? add some beers!
+		{% endfor %}
+	</div>
 </div>
-<div class="span11 content-box">
-<h3>highest rated beers</h3>
-{% for average in high_averages %}
-<a href="/beer/{{ average[0] }}">{{ average[3][0] }}</a>
-<br>
-average: {{ "%.2f"%average[1] }} 
-<p>
-{% endfor %}
+
+<div class = "span11 row">
+	<div class="span11 content-boxw">
+		<h3>highest rated beers</h3>
+		{% for average in high_averages %}
+			<div class="span2">
+				<div class="content-boxmm wordwrap">
+					<div class="img image-boxs clearfix">
+						<a href="/beer/{{ average[0] }}"><img src="{{ average[3][1] }}"/></a>
+					</div>
+					{{ average[3][0] }}
+					<br>
+					average: {{ "%.2f"%average[1] }} 
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 </div>
-<div class="span11 content-box">
-<h3>most rated beers</h3>
-{% for popular in most_rated %}
-<div class="img image-box">
-<a href="/beer/{{ popular[0] }}"><img src="{{ popular[3][1] }}" /></a>
-{{ popular[3][0] }}
-<br>
-average: {{ "%.2f"%popular[1] }} 
-{% endfor %}
+
+<div class = "span11 row">
+	<div class="span11 content-boxw">
+		<h3>most rated beers</h3>
+		{% for popular in most_rated %}
+			<div class="span2">
+				<div class="content-boxmm wordwrap">
+					<div class="img image-boxs clearfix">
+						<a href="/beer/{{ popular[0] }}"><img src="{{ popular[3][1] }}"/></a>
+					</div>
+					{{ popular[3][0] }}
+					<br>
+					average: {{ "%.2f"%popular[1] }}
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 </div>
+
 <div class="content-boxm center span5 offset3">
 <h4>want to see the <a href="/beers">full list</a> of BeerMe's beers?</h4>
 </div>

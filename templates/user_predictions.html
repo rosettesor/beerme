@@ -5,11 +5,10 @@
 <div class="span12 big_head">
 <h1>{{ user_name }}, there are {{ count }} beers you can still try</h1><h4>     ... here are a few</h4>
 </div>
-<div class="span7 content-box">
+<div class="span6 content-box">
 {% for prediction in high_pred %}
-<a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
-<br>
-our guess for you: {{ prediction[3] }} 
+<a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>, 
+our prediction: {{ prediction[3] }} 
 <p>
 {% else %}
 <h4>have you tried our entire repertoire? suggest beers to add</h4>

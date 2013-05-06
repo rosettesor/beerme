@@ -1,54 +1,54 @@
-1|Blue Moon Belgian White|Coors Brewing Company|Colorado|Witbier|5.40|http://www.bluemoonbrewingcompany.com/
-2|Stella Artois|Stella Artois|Belgium|Euro Pale Lager|5.00|http://www.stellaartois.com/
-3|Coors Light|Coors Brewing Company|Colorado|Light Lager|4.20|http://www.coorslight.com/
-4|Samuel Adams Boston Lager|Boston Beer Company|Massachusetts|Vienna Lager|4.90|http://www.samueladams.com/
-5|Budweiser|Anheuser-Busch|Missouri|American Adjunct Lager|5.00|http://www.budweiser.com/
-6|Dos Equis Special Lager|Cerveceria Cuauhtemoc Moctezuma, S.A. de C.V.|Mexico|American Adjunct Lager|4.30|http://dosequis.com/
-7|Corona Extra|Grupo Modelo S.A. de C.V.|Mexico|American Adjunct Lager|4.60|http://www.corona.com/
-8|Heineken Lager Beer|Heineken Nederland B.V.|Netherlands|Euro Pale Lager|5.00|http://www.heineken.com/
-9|Guinness Extra Stout (Original)|Guinness Ltd.|Ireland|Irish Dry Stout|6.00|http://www.guinness.com/
-10|Yuengling Traditional Lager|Yuengling Brewery|Pennsylvania|American Amber / Red Lager|4.40|http://www.yuengling.com/
-11|90 Minute IPA|Dogfish Head Brewery|Delaware|American Double / Imperial IPA|9.00|http://www.dogfish.com/
-12|Arrogant Bastard Ale|Stone Brewing Co.|California|American Strong Ale|7.20|http://www.stonebrew.com/arrogantbastard/
-13|Sierra Nevada Pale Ale|Sierra Nevada Brewing Co.|California|American Pale Ale|5.60|http://www.sierranevada.com/beer/year-round/pale-ale
-14|Fat Tire Amber Ale|New Belgium Brewing|Colorado|American Amber / Red Ale|5.20|http://www.newbelgium.com/beer/fat-tire
-15|Lagunitas IPA|Lagunitas Brewing Company|California|American IPA|6.20|http://lagunitas.com/beers/ipa/
-16|Chimay Grand Reserve (Blue)|Bieres de Chimay S.A.|Belgium|Belgian Strong Dark Ale|9.00|http://www.chimay.com/en/
-17|Newcastle Brown Ale|The Caledonian Brewery Company|United Kingdowm (Scotland)|English Brown Ale|4.70|http://www.newcastlebrown.com/
-18|Allagash White|Allagash Brewing Company|Maine|Witbier|5.00|http://www.allagash.com/beer/year-round/white
-19|Sierra Nevada Celebration Ale|Sierra Nevada Brewing Co.|California|American IPA|6.80|http://www.sierranevada.com/beer/seasonal/celebration-ale
-20|Anchor Steam Beer|Anchor Brewing Company|California|California Common / Steam Beer|4.90|http://www.anchorbrewing.com/beer/anchor_steam
-21|Delirium Tremens|Brouwerij Huyghe|Belgium|Belgian Strong Pale Ale|8.50|http://www.delirium.be/
-22|Racer 5 IPA|Bear Republic Brewing Co.|California|American IPA|7.00|http://www.bearrepublic.com/ourbeers.php
-23|Samuel Smith's Oatmeal Stout|Samuel Smith Old Brewery (Tadcaster)|United Kingdom (England)|Oatmeal Stout|5.00|http://www.samuelsmithsbrewery.co.uk/oatmealstout.html
-24|Brooklyn Lager|Brooklyn Brewery|New York|American Amber / Red Lager|5.20|http://brooklynbrewery.com/brooklyn-beers/perennial-brews/brooklyn-lager
-25|Hoegaarden Original White Ale|Brouwerij van Hoegaarden|Belgium|Witbier|4.90|http://www.hoegaarden.com/
-26|Three Philosophers Belgian Style Blend (Quadrupel)|Brewery Ommegang|New York|Quadrupel (Quad)|9.80|http://www.ommegang.com/
-27|Icehouse|Miller Brewing Co.|Wisconsin|American Adjunct Lager|5.50|http://www.icehouse.com/
-28|Pabst Blue Ribbon (PBR)|Pabst Brewing Company|Illinois|American Adjunct Lager|4.74|http://www.pabstblueribbon.com/
-29|Modelo Especial|Grupo Modelo S.A. de C.V.|Mexico|American Adjunct Lager|4.40|http://www.crownimportsllc.com/ourbrands/modelo.htm
-30|Keystone Light|Coors Brewing Company|Colorado|Light Lager|4.20|http://www.keystonelight.com/
-31|Miller High Life|Miller Brewing Co.|Wisconsin|AMerican Adjunct Lager|4.60|http://www.millerhighlife.com/
-32|Michelob Ultra|Anheuser-Busch|Missouri|Light Lager|4.20|http://www.michelobultra.com/
-33|Busch Beer|Anheuser-Busch|Missouri|American Adjunct Lager|4.60|http://busch.com/
-34|Bud Light|Anheuser-Busch|Missouri|Light Lager|4.20|http://www.budlight.com/
-35|Miller Lite|Miller Brewing Co.|Wisconsin|Light Lager|4.17|http://www.millerlite.com/
-36|Tecate|Cerveceria Cuauhtemoc Moctezuma, S.A. de C.V.|Mexico|American Adjunct Lager|4.50|http://www.tecate.com/
-37|Beck's|Braurei Beck & Co.|Germany|German Pilsener|5.00|http://www.becks.com/
-38|Amstel Lager|Amstel Brouwerij B.V.|Netherlands|Light Lager|3.50|http://amstellight.com/
-39|Foster's Lager|Foster's Group Limited|Australia|American Adjunct Lager|5.00|http://www.fostersbeer.com/
-40|Carlsberg Beer|Carlsberg Danmark A/S|Denmark|German Pilsener|5.00|http://carlsberg.com/flash.html
-41|Pilsner Urquell|Plzensky Prazdroj, a.s.|Czech Republic|Czech Pilsener|4.40|http://www.pilsnerurquell.com/us/
-42|Asahi Super Dry|Asahi Breweries Ltd.|Japan|Japanese Rice Lager|5.00|http://www.asahibeer.com/brands/beer/superdry/
-43|Sapporo Original Draft Beer|Sapporo Breweries Ltd.|Japan|Japanese Rice Lager|5.00|http://sapporousa.com/
-44|Kirin Ichiban|Kirin Brewery Company, Limited|Japan|American Pale Lager|5.00|http://www.kirin.com/
-45|Suntory Malt's Beer|Suntory|Japan|German Pilsener|5.00|http://www.suntory.com/beer/premium/en/
-46|Tsingtao|Tsingtao Brewery Co., Ltd|China|American Adjunct Lager|4.80|https://www.tsingtaobeer.com/
-47|Pliny the Elder|Russian River Brewing Company|California|American Double / Imperial IPA|8.00|http://www.russianriverbrewing.com/brews/pliny-the-elder/
-48|Widmer Hefeweizen|Widmer Brothers Brewing Company|Oregon|American Pale Wheat Ale|4.90|http://widmerbrothers.com/beer/
-49|Shakespeare Oatmeal Stout|Rogue Ales|Oregon|Oatmeal Stout|6.10|http://rogue.com/beers/shakespeare-stout.php
-50|Paulaner Oktoberfest-Marzen|Paulaner Brauerei GmbJ & Co. KG|Germany|Marzen / Oktoberfest|6.00|http://us.paulaner.com/our-beer/oktoberfest-maerzen
-51|Singha|Boon Rawd Brewery Co., Ltd|Thailand|Euro Pale Lager|5.00|http://www.singhabeer.com/
-52|Franziskaner Hefe-Weisse|Spaten-Franziskaner-Brau|Germany|Hefeweizen|5.00|http://www.franziskaner.com/
-53|Kingfisher Premium Lager|United Brewers - UB Group|India|American Pale Lager|4.80|http://kingfisherbeerusa.com/premium_lager.html
-54|Hite|Hite Brewery Company LTD|Korea (South)|Euro Pale Lager|4.50|
+1|Blue Moon Belgian White|Coors Brewing Company|Colorado|Witbier|5.40|http://www.bluemoonbrewingcompany.com/|http://www.kickbuttcoffee.com/images/blue-moon-pale-ale.jpg
+2|Stella Artois|Stella Artois|Belgium|Euro Pale Lager|5.00|http://www.stellaartois.com/|http://lamerezou.ie/wp-content/uploads/2013/01/Stella-Artois-copo-e-garrafa_1-e1358888588550.jpg
+3|Coors Light|Coors Brewing Company|Colorado|Light Lager|4.20|http://www.coorslight.com/|http://www.beer-universe.com/images/articles/270/Coors%20Light%20Bottle%20and%20Can.jpg
+4|Samuel Adams Boston Lager|Boston Beer Company|Massachusetts|Vienna Lager|4.90|http://www.samueladams.com/|http://samueladams.s3.amazonaws.com/app_assets/bottledetaillargebonstonlager--en--4c091e74-00e0-408f-9751-5d39964eb3a9.png
+5|Budweiser|Anheuser-Busch|Missouri|American Adjunct Lager|5.00|http://www.budweiser.com/|http://www.prosportstickers.com/product_images/q/budweiser_bottle_decal__42283.jpg
+6|Dos Equis Special Lager|Cerveceria Cuauhtemoc Moctezuma, S.A. de C.V.|Mexico|American Adjunct Lager|4.30|http://dosequis.com/|http://danmurphys.com.au/media/DM/Product/750x2000/916363_0_9999_v1_m56577569847120658.jpg
+7|Corona Extra|Grupo Modelo S.A. de C.V.|Mexico|American Adjunct Lager|4.60|http://www.corona.com/|http://brindco.com/images/Corona_Extra_Bottle_2.jpg
+8|Heineken Lager Beer|Heineken Nederland B.V.|Netherlands|Euro Pale Lager|5.00|http://www.heineken.com/|http://www.productwiki.com/upload/images/heineken.jpg
+9|Guinness Extra Stout (Original)|Guinness Ltd.|Ireland|Irish Dry Stout|6.00|http://www.guinness.com/|http://cdn.gunaxin.com/wp-content/uploads/2011/03/Guinness-Extra.jpg
+10|Yuengling Traditional Lager|Yuengling Brewery|Pennsylvania|American Amber / Red Lager|4.40|http://www.yuengling.com/|http://farm9.staticflickr.com/8351/8357160809_1c7f97e265_z.jpg
+11|90 Minute IPA|Dogfish Head Brewery|Delaware|American Double / Imperial IPA|9.00|http://www.dogfish.com/|http://yearofbeer.files.wordpress.com/2010/03/dogfish-head-90-minute-ipa1.jpg
+12|Arrogant Bastard Ale|Stone Brewing Co.|California|American Strong Ale|7.20|http://www.stonebrew.com/arrogantbastard/|http://www.realfooduniversity.com/wp-content/uploads/2011/06/Stone-Oaked-Arrogant-Bastard-Ale.jpg
+13|Sierra Nevada Pale Ale|Sierra Nevada Brewing Co.|California|American Pale Ale|5.60|http://www.sierranevada.com/|http://www.cdn.sierranevada.com/sites/default/files/content/beers/pale-ale/paleale.png
+14|Fat Tire Amber Ale|New Belgium Brewing|Colorado|American Amber / Red Ale|5.20|http://www.newbelgium.com/beer/fat-tire|http://www.npaper-wehaa.com/pub-files/13136110824e4c1d4ac0dfe/pub/Northernexpress-09-03-2012/lib/13465314705042708ebde53.png
+15|Lagunitas IPA|Lagunitas Brewing Company|California|American IPA|6.20|http://lagunitas.com/beers/ipa/|http://s3.media.squarespace.com/production/840157/9867282/_zikSxOpljDc/S3lNc9cnuHI/AAAAAAAAAY8/a1dU522Ut_s/s320/lagunitis+IPA.JPG
+16|Chimay Grand Reserve (Blue)|Bieres de Chimay S.A.|Belgium|Belgian Strong Dark Ale|9.00|http://www.chimay.com/en/|http://winelistsummit.com/wine/images/product/00869.jpg
+17|Newcastle Brown Ale|The Caledonian Brewery Company|United Kingdowm (Scotland)|English Brown Ale|4.70|http://www.newcastlebrown.com/|http://zythophile.files.wordpress.com/2011/03/newcastle-brown.jpg
+18|Allagash White|Allagash Brewing Company|Maine|Witbier|5.00|http://www.allagash.com/beer/|http://www.letsgotovilla.com/wp-content/uploads/2013/04/tumblr_lufdeaKl5I1qdl8k3o1_500.jpg
+19|Sierra Nevada Celebration Ale|Sierra Nevada Brewing Co.|California|American IPA|6.80|http://www.sierranevada.com/beer/|http://24.media.tumblr.com/tumblr_lvplorE8py1qes3igo1_400.jpg
+20|Anchor Steam Beer|Anchor Brewing Company|California|California Common / Steam Beer|4.90|http://www.anchorbrewing.com/beer/anchor_steam|http://www.anchorbrewing.com/assets/steam-bio.png
+21|Delirium Tremens|Brouwerij Huyghe|Belgium|Belgian Strong Pale Ale|8.50|http://www.delirium.be/|http://www.belgianbeercafe.com/sites/default/files/imagecache/beer_detail/delirium.png
+22|Racer 5 IPA|Bear Republic Brewing Co.|California|American IPA|7.00|http://www.bearrepublic.com/ourbeers.php|http://blogs.menshealth.com/guy-gourmet/files/2012/07/Racer5update.jpg
+23|Samuel Smith's Oatmeal Stout|Samuel Smith Old Brewery (Tadcaster)|United Kingdom (England)|Oatmeal Stout|5.00|http://www.samuelsmithsbrewery.co.uk/oatmealstout.html|http://liquiddiets.files.wordpress.com/2010/03/3631024452_0566afc2ba.jpg
+24|Brooklyn Lager|Brooklyn Brewery|New York|American Amber / Red Lager|5.20|http://brooklynbrewery.com/brooklyn-beers/|http://blogs.metropulse.com/fearless_foodie/_BrooklynLagerGlass-large.jpg
+25|Hoegaarden Original White Ale|Brouwerij van Hoegaarden|Belgium|Witbier|4.90|http://www.hoegaarden.com/|http://gearcrave.frsucrave.netdna-cdn.com/wp-content/uploads/2008/02/hoegaarden-witbier-02142008_msp.png
+26|Three Philosophers Belgian Style Blend (Quadrupel)|Brewery Ommegang|New York|Quadrupel (Quad)|9.80|http://www.ommegang.com/|http://25.media.tumblr.com/tumblr_mbpk8345ut1rbg3e9o1_400.jpg
+27|Icehouse|Miller Brewing Co.|Wisconsin|American Adjunct Lager|5.50|http://www.icehouse.com/|http://www.odomcorp.com/ecom_img/original-33-77-icehouse.jpg
+28|Pabst Blue Ribbon (PBR)|Pabst Brewing Company|Illinois|American Adjunct Lager|4.74|http://www.pabstblueribbon.com/|http://www.undercovercaterer.com/wp-content/uploads/2010/06/pbr-aka-pabst-blue-ribbon-beer.jpg
+29|Modelo Especial|Grupo Modelo S.A. de C.V.|Mexico|American Adjunct Lager|4.40|http://www.crownimportsllc.com/|http://www.shoppersvineyard.com/store/pc/catalog/04924_863_detail.jpg
+30|Keystone Light|Coors Brewing Company|Colorado|Light Lager|4.20|http://www.keystonelight.com/|http://unitedpackageliquors.com/catalog/images/Keystone%20Light%20Can%20WEB.jpg
+31|Miller High Life|Miller Brewing Co.|Wisconsin|American Adjunct Lager|4.60|http://www.millerhighlife.com/|http://www.iambeerlover.com/wp-content/uploads/2008/10/MillerHighLife.jpg
+32|Michelob Ultra|Anheuser-Busch|Missouri|Light Lager|4.20|http://www.michelobultra.com/|http://bleubistrocc.com/wp-content/uploads/2012/07/Michelob-Ultra-988x1600.jpg
+33|Busch Beer|Anheuser-Busch|Missouri|American Adjunct Lager|4.60|http://busch.com/|http://doubled.goatfo.com/home/wp-content/uploads/2012/09/busch_bottle_decal__57144.jpg
+34|Bud Light|Anheuser-Busch|Missouri|Light Lager|4.20|http://www.budlight.com/|http://www.productwiki.com/upload/images/bud_light.jpg
+35|Miller Lite|Miller Brewing Co.|Wisconsin|Light Lager|4.17|http://www.millerlite.com/|http://www.millerlite.com/images/home/bottle.png
+36|Tecate|Cerveceria Cuauhtemoc Moctezuma, S.A. de C.V.|Mexico|American Adjunct Lager|4.50|http://www.tecate.com/|http://www.allaccess.com/assets/img/editorial/raw/te/tecate.jpg
+37|Beck's|Braurei Beck & Co.|Germany|German Pilsener|5.00|http://www.becks.com/|http://www.productwiki.com/upload/images/becks.jpg
+38|Amstel Light|Amstel Brouwerij B.V.|Netherlands|Light Lager|3.50|http://amstellight.com/|http://beeradvocate.com/im/beers/436.jpg
+39|Foster's Lager|Foster's Group Limited|Australia|American Adjunct Lager|5.00|http://www.fostersbeer.com/|http://www.warrenbeer.com/warren/images/products/beer/millercoors/fosters/btl_12oz.jpg
+40|Carlsberg Beer|Carlsberg Danmark A/S|Denmark|German Pilsener|5.00|http://carlsberg.com/flash.html|http://www.theexpgroup.com/blog/wp-content/uploads/2010/04/Profile-bottle-NLL21.jpg
+41|Pilsner Urquell|Plzensky Prazdroj, a.s.|Czech Republic|Czech Pilsener|4.40|http://www.pilsnerurquell.com/us/|http://www.beerfm.com/wp-content/uploads/2012/08/Pilsner-Urquell.jpg
+42|Asahi Super Dry|Asahi Breweries Ltd.|Japan|Japanese Rice Lager|5.00|http://www.asahibeer.com/brands/beer/superdry/|http://www.ndc.co.jp/en/selection/img/87asahi02.jpg
+43|Sapporo Original Draft Beer|Sapporo Breweries Ltd.|Japan|Japanese Rice Lager|5.00|http://sapporousa.com/|http://il.worldclassbeer.com/wp-content/beer_spy/images/prodimages/Sapporo/lPremiumBottleCan.jpg
+44|Kirin Ichiban|Kirin Brewery Company, Limited|Japan|American Pale Lager|5.00|http://www.kirin.com/|http://farm5.staticflickr.com/4029/5077112955_214f0fde6e_z.jpg
+45|Suntory Malt's Beer|Suntory|Japan|German Pilsener|5.00|http://www.suntory.com/beer/premium/en/|http://www.chopsticksny.com/contents/wp-content/uploads/wn0811_Suntory.jpg
+46|Tsingtao|Tsingtao Brewery Co., Ltd|China|American Adjunct Lager|4.80|https://www.tsingtaobeer.com/|http://danmurphys.com.au/media/DM/Product/750x2000/907131_0_9999_v1_m56577569852044540.jpg
+47|Pliny the Elder|Russian River Brewing Company|California|American Double / Imperial IPA|8.00|http://www.russianriverbrewing.com/brews/pliny-the-elder/|http://2.bp.blogspot.com/_B1gdAoYKcxw/S9dHFlmWJcI/AAAAAAAAAFI/1kICaP9GBvI/s1600/Russian+River+Pliny+the+Elder.JPG
+48|Widmer Hefeweizen|Widmer Brothers Brewing Company|Oregon|American Pale Wheat Ale|4.90|http://widmerbrothers.com/beer/|http://wi.worldclassbeer.com/wp-content/beer_spy/images/prodimages/Widmer/lHefeweizenBottle.jpg
+49|Shakespeare Oatmeal Stout|Rogue Ales|Oregon|Oatmeal Stout|6.10|http://rogue.com/beers/shakespeare-stout.php|http://beerandamovie.files.wordpress.com/2012/03/shakes.jpg
+50|Paulaner Oktoberfest-Marzen|Paulaner Brauerei GmbJ & Co. KG|Germany|Marzen / Oktoberfest|6.00|http://us.paulaner.com/|http://www.westchestermagazine.com/2012/WM_2012/SEPTEMBER/beer/Paulaner-Oktoberfest1.jpg
+51|Singha|Boon Rawd Brewery Co., Ltd|Thailand|Euro Pale Lager|5.00|http://www.singhabeer.com/|http://gppbeerblog.files.wordpress.com/2012/03/singha_buckets_03.jpg
+52|Franziskaner Hefe-Weisse|Spaten-Franziskaner-Brau|Germany|Hefeweizen|5.00|http://www.franziskaner.com/|http://www.vinoebirra.it/images/franz.jpg
+53|Kingfisher Premium Lager|United Brewers - UB Group|India|American Pale Lager|4.80|http://kingfisherbeerusa.com/|http://www.viinikartta.fi/media/item_images/alko/IND/hr/791454.jpg
+54|Hite|Hite Brewery Company LTD|Korea (South)|Euro Pale Lager|4.50|http://www.hite.com/|http://4.bp.blogspot.com/-97J4npa923s/Tdk5Qar4NHI/AAAAAAAAAdk/iE0V8HHVAGA/s1600/hite+beer.jpg

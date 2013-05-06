@@ -183,7 +183,8 @@ def home_display():
 		mod_prediction = int(round(prediction))
 		beername = beer.name
 		beerid = beer.id
-		predictions.append((prediction, beername, beerid, mod_prediction))
+		beerimage = beer.image
+		predictions.append((prediction, beername, beerid, mod_prediction, beerimage))
 	high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
 	best_five = itertools.islice(high_prediction, 0, 5)
 
@@ -219,7 +220,8 @@ def user_profile():
 		mod_prediction = int(round(prediction))
 		beername = beer.name
 		beerid = beer.id
-		predictions.append((prediction, beername, beerid, mod_prediction))
+		beerimage = beer.image
+		predictions.append((prediction, beername, beerid, mod_prediction, beerimage))
 	high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
 	best_five = itertools.islice(high_prediction, 0, 5)
 
@@ -464,7 +466,8 @@ def beer_profile(id):
 				mod_prediction = int(round(other_prediction))
 				beername = unrated.name
 				beerid = unrated.id
-				other_predictions.append((other_prediction, beername, beerid, mod_prediction))
+				beerimage = unrated.image
+				other_predictions.append((other_prediction, beername, beerid, mod_prediction, beerimage))
 	similar_five = itertools.islice(other_predictions, 0, 5)
 
 	return render_template("beer_profile.html", beer=beer, userid=user_id,\
@@ -519,6 +522,19 @@ def new_beer():
 		beer.link = form.link.data
 		beer.image = form.image.data
 		model.session.add(beer)
+		model.session.commit()
+
+		new_beer = model.session.query(model.Beer).filter(model.Beer.name == form.name.data).first()
+		add4 = model.Rating(user_id = 4, beer_id = new_beer.id, rating = 1)
+		add5 = model.Rating(user_id = 5, beer_id = new_beer.id, rating = 2)
+		add6 = model.Rating(user_id = 6, beer_id = new_beer.id, rating = 3)
+		add7 = model.Rating(user_id = 7, beer_id = new_beer.id, rating = 4)
+		add8 = model.Rating(user_id = 8, beer_id = new_beer.id, rating = 5)
+		model.session.add(add4)
+		model.session.add(add5)
+		model.session.add(add6)
+		model.session.add(add7)
+		model.session.add(add8)
 		model.session.commit()
 		return redirect(url_for("all_beers"))
 	return render_template('new_beer.html', form=form)

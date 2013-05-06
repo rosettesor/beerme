@@ -2,22 +2,30 @@
 {% block body %}
 <html>
 <body>
-<div class="container-fluid need-head">
+<div class="need-head"></div>
+<div class="span4 content-box">
+<h1>login</h1>
 {% from "_formhelpers.html" import render_field %}
 <form method = "POST" action="/user_login">
   <dl>
-  	<div class="row-fluid">
-  		<div class="span4">
 	<input type="text" class="robo-text input-block-level" placeholder="email" {{ (form.email) }}
 	<input type="password" class="robo-text input-block-level" placeholder="password" {{ (form.password) }}
   </dl>
   <p><button class="btn btn-large btn-primary robo-text" type="submit">BeerMe!</button>
 </form>
 </div>
-<div class="span6"
+<div class="span7 content-box">
+<div class="big_headns">
+<h1>hey, how 'bout a beer?</h1>
 </div>
+<div class="content-boxd wordwrap">
+<h3><div class="span2 pac-textb"> BeerMe </div> is a rating and recommendation guide for beer discovery. Login to see the beers you love or hate, and keep track of ones you want to try. Enjoy!</h3>
+	</div>
+	<div class="center">
+		<form action="{{ url_for("register") }}">
+		<button class="btn btn-large btn-primary robo-text" type="submit">join <div class="pac-textw"> BeerMe </div></button>
+		</form>
 </div>
-<div class="robo-text"><h3><a href="{{ url_for("register") }}">join BeerMe!</a></h3><br></div>
 </div>
 </body>
 </html>

@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
 <html>
-<div class="span11 big_head">
+<div class="span12 big_head">
 <h1>all of BeerMe's beers</h1> 
 </div>
 <div class="robo-text">
 <form method = "POST" action="/beers_display">
-<h4>sort beers by:</h4>
-    <select name="robo-text sort_beers">
+	<div class="robo-textb">sort by:</div>
+    <select name="sort_beers">
         <option value="name">name</option>
         <option value="brewer">brewer</option>
         <option value="origin">origin</option>

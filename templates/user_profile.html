@@ -4,6 +4,9 @@
 <div class="span12 big_head">
 <h1>{{ user_name }}, you've had {{ count }} beers</h1>
 </div>
+
+
+
 <div class="span3 content-box">
 <h3>{{ user_name }}'s highest rated</h3>
 {% for high in high_rated %}
@@ -13,17 +16,32 @@ rating: {{ high.rating }}<br>
 {% endfor %}
 <h3><a href="/profile/ratings/{{userid}}">see all ratings</a><br></h3>
 </div>
-<div class="span8 content-box">
-<h3>beers we think you'll like</h3> 
-{% for prediction in high_pred %}
-<a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
-<br>
-our guess for you: {{ prediction[3] }} 
-<p>
-{% else %}
-<h4>have you tried our entire repertoire? suggest beers to add</h4>
-{% endfor %}
-<h3><a href="/profile/predictions/{{userid}}">see all recommendations</a></h3>
+
+
+
+<div class = "span8 row">
+	<div class="span8 content-boxw">
+		<h3>beers we think you'll like</h3> 
+		{% for prediction in high_pred %}
+			<div class="span2">
+				<div class="content-boxmm wordwrap">
+					<div class="img image-boxs clearfix">
+						<a href="/beer/{{ prediction[2] }}"><img src="{{ prediction[4] }}"/></a>
+					</div>
+					{{ prediction[1] }}
+					<br>
+					our guess for you: {{ prediction[3] }} 
+				</div>
+			</div>
+		{% else %}
+		<h4>have you tried our entire repertoire? suggest beers to add</h4>
+		{% endfor %}
+		<div class="span8 need-headl">
+			<h3><a href="/profile/predictions/{{userid}}">see all recommendations</a></h3>
+		</div>
+	</div>
 </div>
+
+
 </html>
 {% endblock %}

@@ -1,23 +1,31 @@
 {% extends "layout2.html" %}
 {% block body %}
 <html>
-<h2>sign up for BeerMe!</h2>
+<div class="need-headl"></div>
+<div class="big_head">
+<h1>tell us a little about yourself</h1>
+</div>
 <body>
+	<div class="span5 robo-textb content-box">
 {% from "_formhelpers.html" import render_field %}
+<h3>sign up for BeerMe</h3>
 <form method=post action="/register">
   <dl>
 
-	what would you like us to call you? {{ form.username }}
+	what would you like us to call you?<br>{{ form.username }}
 	{{ render_field(form.email) }}
 	{{ render_field(form.password) }}
 	<br>
-	not required...
+	<h4>not required...</h4>
 	{{ render_field(form.age) }}
 	{{ render_field(form.city) }}
 	{{ render_field(form.state) }}
   </dl>
-  <p><input type=submit value="next">
+  <p>
+  	<button class="btn btn-small btn-primary robo-text" type="submit">next</button>
 </form>
+</div>
+</div>
 </body>
 </html>
 {% endblock %}

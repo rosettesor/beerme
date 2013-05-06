@@ -45,17 +45,29 @@
 <button class="btn btn-small btn-primary robo-text" type="submit">submit</button>
 </form>
 </div>
-<div class="span11 content-box">
-<h4>if you like this, you should also try...</h4>
-{% for similar in try_five %}
-<a href="/beer/{{ similar[2] }}">{{ similar[1] }}</a>
-<br>
-our guess for you: {{ similar[3] }} 
-<p>
-{% else %}
-<h4>see our entire listing for more</h4>
-{% endfor %}
+
+
+<div class = "span10 row">
+	<div class="span10 content-boxw">
+		<h4>if you like this, you should also try...</h4>
+		{% for similar in try_five %}
+			<div class="span2">
+				<div class="content-boxmm wordwrap">
+					<div class="img image-boxs clearfix">
+						<a href="/beer/{{ similar[2] }}"><img src="{{ similar[4] }}"/></a>
+					</div>
+					{{ similar[1] }}
+					<br>
+					our guess for you: {{ similar[3] }} 
+				</div>
+			</div>
+		{% else %}
+		<h4>see our <a href="/beers">entire listing</a> for more</h4>
+		{% endfor %}
+	</div>
 </div>
+
+
 <div class="content-boxm center span4">
 <h4>want to see <a href="/beers">all</a> of our beers?</h4>
 </div>
