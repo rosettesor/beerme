@@ -2,22 +2,28 @@
 {% block body %}
 <html>
 <div class="span12 big_head">
-<h1>{{ user_name }}, you've had {{ count }} beers</h1>
+	<h1>{{ user_name }}, you've rated {{ count }} beers</h1>
 </div>
 
 
-
-<div class="span3 content-box">
-<h3>{{ user_name }}'s highest rated</h3>
-{% for high in high_rated %}
-<a href="/beer/{{high.beer.id}}">{{high.beer.name}}</a><br>
-rating: {{ high.rating }}<br>
-<p>
-{% endfor %}
-<h3><a href="/profile/ratings/{{userid}}">see all ratings</a><br></h3>
+<div class="span3 content-boxl">
+	<h3>{{ user_name }}'s highest rated</h3>
+	{% for high in high_rated %}
+		<div class="row">
+			<div class="content-boxmml wordwrap">
+				<div class="img image-boxsl">
+					<a href="/beer/{{high.beer.id}}"><img src="{{high.beer.image}}"/></a><br>
+				</div>
+				{{high.beer.name}}
+				<br>
+				rating: {{ high.rating }}<br>
+			</div>
+		</div>
+	{% endfor %}
+	<div class="span12 need-headl">
+		<h3><a href="/profile/ratings/{{userid}}">see all ratings</a><br></h3>
+	</div>
 </div>
-
-
 
 <div class = "span8 row">
 	<div class="span8 content-boxw">
@@ -34,14 +40,17 @@ rating: {{ high.rating }}<br>
 				</div>
 			</div>
 		{% else %}
-		<h4>have you tried our entire repertoire? suggest beers to add</h4>
+		<h4>have you tried our entire repertoire? <a href="/new_beer">add a beer</a> to our list!</h4>
 		{% endfor %}
-		<div class="span8 need-headl">
+		<div class="span12 need-headl">
 			<h3><a href="/profile/predictions/{{userid}}">see all recommendations</a></h3>
 		</div>
 	</div>
 </div>
 
+<div class="content-boxm center span4">
+	<h4>want to see <a href="/beers">all</a> of our beers?</h4>
+</div>
 
 </html>
 {% endblock %}

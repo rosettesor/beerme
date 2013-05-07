@@ -1,27 +1,37 @@
 {% extends "layout2.html" %}
 {% block body %}
 <html>
+<body>
+
 <div class="span12 big_head">
 <h1>almost there... tell us about your taste</h1>
 </div>
+
 <div class="span8 content-box">
-<h3>please rate at least 5:</h3>
-<body>
-<form method = "POST" action="/user_info">
-{% for beer in rando_beers %}
-<input type="radio" name="beer{{loop.index}}" id="beer1" value="whichbeer">
-<a href="/beer/{{ beer[0][0] }}">{{ beer[0][1] }}</a>
-<br>
-or
-<br>
-<input type="radio" name="beer{{loop.index}}" id="beer2" value="whichbeer">
-<a href="/beer/{{ beer[1][0] }}">{{ beer[1][1] }}</a>
-<p>
-<br>
-{% endfor %}
-<button class="btn btn-small btn-primary robo-text" type="submit">submit</button>
-</form>
+	<h3>please rate at least 5:</h3>
+	{% for beer in rando_beers %}
+			<div class="span2">
+				<div class="content-boxmmm wordwrap">
+					<div class="img image-boxs clearfix">
+						<a href="/beer/{{ beer[0] }}"><img src="{{ beer[1][1] }}"/></a>
+					</div>
+					{{ beer[1][0] }}
+					<form method = "POST" action="/user_info">
+    					<select name="new_rating">
+    					    <option value="0">rate me!</option>
+    					    <option value="1">1</option>
+    					    <option value="2">2</option>
+    					    <option value="3">3</option>
+    					    <option value="4">4</option>
+    					    <option value="5">5</option>
+    					</select>
+					</form>
+				</div>
+			</div>
+	{% endfor %}
+	<button class="btn btn-small btn-primary robo-text" type="submit">submit</button>
 </div>
+
 </body>
 </html>
 {% endblock %}

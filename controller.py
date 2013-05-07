@@ -82,19 +82,15 @@ def register():
 def new_user():
 	all_beers = model.session.query(model.Beer).all()
 	rando_list = random.sample(range(len(all_beers)), 10)
-	first_half = rando_list[:len(rando_list)/2]
-	last_half = rando_list[len(rando_list)/2:]
 	
-	beernames = []
+	beers = []
 	for i in rando_list:
 		beer = model.session.query(model.Beer).filter_by(id=i).first()
-		beernames.append(beer.name)
-	first_beers = beernames[:len(beernames)/2]
-	last_beers = beernames[len(beernames)/2:]
+		beername = beer.name
+		beerimage = beer.image
+		beers.append((beername, beerimage))
 
-	rando_beers1 = zip(first_half, first_beers)
-	rando_beers2 = zip(last_half, last_beers)
-	rando_beers = zip(rando_beers1, rando_beers2) # list of tuple pairs
+	rando_beers = zip(rando_list, beers) # list of tuple pairs
 
 	return render_template('user_info.html', rando_beers=rando_beers)
 
@@ -102,7 +98,7 @@ def new_user():
 # enter user preferences into database
 @app.route("/user_info", methods = ["GET", "POST"])
 def user_info():
-	enter_rating = request.form['whichbeer']
+	enter_rating = request.form['new_rating']
 	print enter_rating
 	# beer = model.session.query(model.Beer).get(id)
 	# rating_change = request.form['new_rating']
@@ -117,6 +113,41 @@ def user_info():
 	# 	return redirect(url_for("beer_profile", id=beer.id))
 	# model.session.commit()
 	# return redirect(url_for("beer_profile", id=beer.id))
+
+
+
+	# form = AddBeerForm(request.form)
+	# if request.method == 'POST' and form.validate():
+	# 	beer = model.Beer()
+	# 	beer.name = form.name.data
+	# 	beer.brewer = form.brewer.data
+	# 	beer.origin = form.origin.data
+	# 	beer.style = form.style.data
+	# 	beer.abv = form.abv.data
+	# 	beer.link = form.link.data
+	# 	beer.image = form.image.data
+	# 	model.session.add(beer)
+	# 	model.session.commit()
+
+	# 	new_beer = model.session.query(model.Beer).filter(model.Beer.name == form.name.data).first()
+	# 	add4 = model.Rating(user_id = 4, beer_id = new_beer.id, rating = 1)
+	# 	add5 = model.Rating(user_id = 5, beer_id = new_beer.id, rating = 2)
+	# 	add6 = model.Rating(user_id = 6, beer_id = new_beer.id, rating = 3)
+	# 	add7 = model.Rating(user_id = 7, beer_id = new_beer.id, rating = 4)
+	# 	add8 = model.Rating(user_id = 8, beer_id = new_beer.id, rating = 5)
+	# 	model.session.add(add4)
+	# 	model.session.add(add5)
+	# 	model.session.add(add6)
+	# 	model.session.add(add7)
+	# 	model.session.add(add8)
+	# 	model.session.commit()
+	# 	return redirect(url_for("all_beers"))
+	# return render_template('new_beer.html', form=form)
+
+
+
+
+
 
 
 # home/welcome page for logged in user
@@ -250,7 +281,8 @@ def user_queue():
 		mod_prediction = int(round(prediction))
 		beername = beer.name
 		beerid = beer.id
-		predictions.append((prediction, beername, beerid, mod_prediction))
+		beerimage = beer.image
+		predictions.append((prediction, beername, beerid, mod_prediction, beerimage))
 	high_queue = sorted(predictions, key=operator.itemgetter(0), reverse = True)
 
 	all_ratings = model.session.query(model.Rating).filter_by(user_id=current_user.id).\
@@ -266,9 +298,11 @@ def user_queue():
 		mod_prediction = int(round(prediction))
 		beername = beer.name
 		beerid = beer.id
-		other_predictions.append((prediction, beername, beerid, mod_prediction))
+		beerimage = beer.image
+		other_predictions.append((prediction, beername, beerid, mod_prediction, beerimage))
 	high_prediction = sorted(other_predictions, key=operator.itemgetter(0), reverse = True)
 	best_five = itertools.islice(high_prediction, 0, 5)
+	print best_five
 
 	return render_template("user_queue.html", user_name = user_name, \
 		queue=high_queue, high_pred = best_five, count = how_many, userid=user_id)
@@ -300,7 +334,8 @@ def user_ratings(id):
 			mod_prediction = int(round(prediction))
 			beername = beer.name
 			beerid = beer.id
-			predictions.append((prediction, beername, beerid, mod_prediction))
+			beerimage = beer.image
+			predictions.append((prediction, beername, beerid, mod_prediction, beerimage))
 		high_prediction = sorted(predictions, key=operator.itemgetter(0), reverse = True)
 		best_five = itertools.islice(high_prediction, 0, 5)
 

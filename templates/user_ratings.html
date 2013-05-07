@@ -4,26 +4,46 @@
 <div class="span12 big_head">
 <h1>here are all the beers you've rated</h1>
 </div>
-<div class="span3 content-box">
-<h3>{{ user_name }}'s ratings</h3>
-{% for rating in ratings %}
-<a href="/beer/{{rating.beer.id}}">{{rating.beer.name}}</a><br>
-your rating: {{ rating.rating }}<br>
-<p>
-{% endfor %}
+
+<div class="span3 content-boxl">
+	<h3>{{ user_name }}'s ratings</h3>
+	{% for rating in ratings %}
+		<div class="row">
+			<div class="content-boxmml wordwrap">
+				<div class="img image-boxsl">
+					<a href="/beer/{{rating.beer.id}}"><img src="{{rating.beer.image}}"/></a><br>
+				</div>
+				{{rating.beer.name}}
+				<br>
+				your rating: {{ rating.rating }}<br>
+			</div>
+		</div>
+	{% endfor %}
 </div>
-<div class="span8 content-box">
-<h3>want to try more? we recommend for you:</h3> 
-{% for prediction in high_pred %}
-<a href="/beer/{{ prediction[2] }}">{{ prediction[1] }}</a>
-<br>
-our guess for you: {{ prediction[3] }} 
-<p>
-{% else %}
-<h4>have you tried our entire repertoire? suggest beers to add</h4>
-{% endfor %}
-<h3><a href="/profile/predictions/{{userid}}">see all recommendations</a></h3>
+
+<div class = "span7 row">
+	<div class="span7 content-boxw">
+		<h3>want to try more? we recommend for you:</h3> 
+		{% for prediction in high_pred %}
+			<div class="span2">
+				<div class="content-boxmm wordwrap">
+					<div class="img image-boxs clearfix"
+						<a href="/beer/{{ prediction[2] }}"><img src="{{ prediction[4] }}"/></a>
+					</div>
+					{{ prediction[1] }}
+					<br>
+					our guess for you: {{ prediction[3] }} 
+				</div>
+			</div>
+		{% else %}
+		<h4>have you tried our entire repertoire? <a href="/new_beer">add a beer</a> to our list</h4>
+		{% endfor %}
+		<div class="span12 need-headl">
+			<h3><a href="/profile/predictions/{{userid}}">see all recommendations</a></h3>
+		</div>
+	</div>
 </div>
+
 <div class="content-boxm center span4">
 <h4>want to see <a href="/beers">all</a> of our beers?</h4>
 </div>
