@@ -13,6 +13,7 @@ import os
 import forms
 import random
 from forms import LoginForm, RegistrationForm, AddBeerForm
+globvar = 0
 
 
 app = Flask(__name__)
@@ -73,6 +74,11 @@ def register():
 		user.state = form.state.data
 		model.session.add(user)
 		model.session.commit()
+
+		newuser = model.session.query(model.User).filter(model.User.username == form.username.data).first()
+		global globvar
+		globvar = newuser.id
+
 		return redirect(url_for('new_user'))
 	return render_template('register.html', form=form)
 
@@ -80,74 +86,43 @@ def register():
 # get more user info for account, part 2 of 2
 @app.route("/new_user", methods = ["GET", "POST"])
 def new_user():
-	all_beers = model.session.query(model.Beer).all()
-	rando_list = random.sample(range(len(all_beers)), 10)
+	if globvar:
+		all_beers = model.session.query(model.Beer).all()
+		rando_list = random.sample(range(len(all_beers)), 10)
 	
-	beers = []
-	for i in rando_list:
-		beer = model.session.query(model.Beer).filter_by(id=i).first()
-		beername = beer.name
-		beerimage = beer.image
-		beers.append((beername, beerimage))
+		beers = []
+		for i in rando_list:
+			beer = model.session.query(model.Beer).filter_by(id=i).first()
+			beername = beer.name
+			beerimage = beer.image
+			beers.append((beername, beerimage))
 
-	rando_beers = zip(rando_list, beers) # list of tuple pairs
-
-	return render_template('user_info.html', rando_beers=rando_beers)
+		rando_beers = zip(rando_list, beers) # list of tuple pairs
+		return render_template('user_info.html', rando_beers=rando_beers)
 
 
 # enter user preferences into database
 @app.route("/user_info", methods = ["GET", "POST"])
 def user_info():
-	enter_rating = request.form['new_rating']
-	print enter_rating
-	# beer = model.session.query(model.Beer).get(id)
-	# rating_change = request.form['new_rating']
-	# current_rating = model.session.query(model.Rating).filter(model.Rating.user_id==current_user.id, model.Rating.beer_id==beer.id).first()
-	# if current_rating:
-	# 	current_rating.rating = rating_change
-	# else:
-	# 	new_rating = request.form['new_rating']
-	# 	add_rating = model.Rating(user_id = current_user.id, beer_id = beer.id, rating = new_rating)
-	# 	model.session.add(add_rating)
-	# 	model.session.commit()
-	# 	return redirect(url_for("beer_profile", id=beer.id))
-	# model.session.commit()
-	# return redirect(url_for("beer_profile", id=beer.id))
+	if globvar:
+		enter_rating = request.form
+		create_profile = []
+		for new in enter_rating:
+			if enter_rating[new] != '0':
+				create_profile.append((new, enter_rating[new]))
+
+		for rat in create_profile:
+			newadd = model.Rating(user_id = globvar, beer_id = rat[0], rating = rat[1])
+			model.session.add(newadd)
+			model.session.commit()
+		return redirect(url_for("new_login"))
 
 
-
-	# form = AddBeerForm(request.form)
-	# if request.method == 'POST' and form.validate():
-	# 	beer = model.Beer()
-	# 	beer.name = form.name.data
-	# 	beer.brewer = form.brewer.data
-	# 	beer.origin = form.origin.data
-	# 	beer.style = form.style.data
-	# 	beer.abv = form.abv.data
-	# 	beer.link = form.link.data
-	# 	beer.image = form.image.data
-	# 	model.session.add(beer)
-	# 	model.session.commit()
-
-	# 	new_beer = model.session.query(model.Beer).filter(model.Beer.name == form.name.data).first()
-	# 	add4 = model.Rating(user_id = 4, beer_id = new_beer.id, rating = 1)
-	# 	add5 = model.Rating(user_id = 5, beer_id = new_beer.id, rating = 2)
-	# 	add6 = model.Rating(user_id = 6, beer_id = new_beer.id, rating = 3)
-	# 	add7 = model.Rating(user_id = 7, beer_id = new_beer.id, rating = 4)
-	# 	add8 = model.Rating(user_id = 8, beer_id = new_beer.id, rating = 5)
-	# 	model.session.add(add4)
-	# 	model.session.add(add5)
-	# 	model.session.add(add6)
-	# 	model.session.add(add7)
-	# 	model.session.add(add8)
-	# 	model.session.commit()
-	# 	return redirect(url_for("all_beers"))
-	# return render_template('new_beer.html', form=form)
-
-
-
-
-
+# login for new user
+@app.route("/new_login", methods=["GET", "POST"])
+def new_login():
+	form = LoginForm(request.form)
+	return render_template("new_login.html", form=form)
 
 
 # home/welcome page for logged in user

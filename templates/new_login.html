@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block body %}
+<html>
+<body>
+<div class="span12 content-box big_head center">
+	<h1>Hooray! Welcome to BeerMe!</h1>
+	<h3>login to begin your adventure in beer</h3>
+</div>
+
+<div class="span4 content-box">
+<h1>login</h1>
+{% from "_formhelpers.html" import render_field %}
+<form method = "POST" action="/user_login">
+  <dl>
+	<input type="text" class="robo-text input-block-level" placeholder="email" {{ (form.email) }}
+	<input type="password" class="robo-text input-block-level" placeholder="password" {{ (form.password) }}
+  </dl>
+  <p><button class="btn btn-large btn-primary robo-text" type="submit">BeerMe!</button>
+</form>
+</div>
+
+</body>
+</html>
+{% endblock %}
